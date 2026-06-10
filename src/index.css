@@ -416,6 +416,10 @@ button {
     margin: 0 auto !important;
     page-break-after: always !important;
   }
+
+  .hide-on-print {
+    display: none !important;
+  }
 }
 
 @media (max-width: 900px) {
@@ -479,5 +483,42 @@ button {
   .preview-header .btn-primary {
     width: 100%;
     justify-content: center;
+  }
+
+  .mobile-only-logo {
+    display: flex !important;
+  }
+
+  .hero-btn {
+    padding: 1rem 1.5rem !important;
+    font-size: 1rem !important;
+    white-space: nowrap;
+  }
+}
+
+/* Auth Page Responsive Layout */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-panel-left {
+  display: none !important;
+}
+
+.auth-panel-right {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+@media (min-width: 900px) {
+  .auth-container {
+    flex-direction: row;
+  }
+  .auth-panel-left {
+    display: flex !important;
   }
 }

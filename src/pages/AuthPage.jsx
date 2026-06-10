@@ -104,9 +104,9 @@ export const AuthPage = () => {
   return (
     <>
       {renderModal()}
-      <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'var(--font-family)' }}>
+      <div className="auth-container" style={{ minHeight: '100vh', fontFamily: 'var(--font-family)' }}>
         {/* Sol Panel: Tanıtım */}
-        <div style={{ 
+        <div className="auth-panel-left" style={{ 
           flex: 1, 
           background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)', 
           color: 'white', 
@@ -162,9 +162,12 @@ export const AuthPage = () => {
         </div>
 
         {/* Sağ Panel: Form */}
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc', padding: '2rem' }}>
+        <div className="auth-panel-right" style={{ background: '#f8fafc', padding: '2rem' }}>
           <div style={{ width: '100%', maxWidth: '400px' }}>
             <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+              <div className="mobile-only-logo" style={{ display: 'none', justifyContent: 'center', marginBottom: '2rem' }}>
+                <img src="/logo.png" alt="CV Stüdyo Logo" onClick={() => navigate('/')} style={{ height: '40px', cursor: 'pointer' }} />
+              </div>
               <h2 style={{ fontSize: '2rem', fontWeight: '800', margin: '0 0 0.5rem 0', color: '#0f172a' }}>
                 {isLogin ? 'Hoş Geldin' : 'Aramıza Katıl'}
               </h2>

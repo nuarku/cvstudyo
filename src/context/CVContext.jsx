@@ -33,7 +33,8 @@ const initialState = {
   skills: [],
   languages: [],
   volunteer: [],
-  references: []
+  references: [],
+  tests: {}
 };
 
 export const CVProvider = ({ children }) => {
@@ -55,7 +56,8 @@ export const CVProvider = ({ children }) => {
               ...parsedData,
               languages: parsedData.languages || initialState.languages,
               volunteer: parsedData.volunteer || initialState.volunteer,
-              references: parsedData.references || initialState.references
+              references: parsedData.references || initialState.references,
+              tests: parsedData.tests || initialState.tests
             });
           } else {
             // New user, save initial state
@@ -90,6 +92,13 @@ export const CVProvider = ({ children }) => {
 
   const updatePersonalInfo = (data) => {
     setCvData(prev => ({ ...prev, personalInfo: { ...prev.personalInfo, ...data } }));
+  };
+
+  const updateTests = (testName, testResult) => {
+    setCvData(prev => ({
+      ...prev,
+      tests: { ...(prev.tests || {}), [testName]: testResult }
+    }));
   };
 
   const addExperience = (exp) => {
@@ -201,6 +210,7 @@ export const CVProvider = ({ children }) => {
       cvData,
       updateTheme,
       updatePersonalInfo,
+      updateTests,
       addExperience,
       updateExperience,
       removeExperience,

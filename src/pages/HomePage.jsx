@@ -77,7 +77,69 @@ export const HomePage = () => {
             </div>
           </div>
         </section>
+      {/* Features Highlight Section */}
+        <section style={{ borderTop: '1px solid #f1f5f9', borderBottom: '1px solid #f1f5f9', background: 'white', padding: '4rem 2rem' }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2.5rem', textAlign: 'center' }}>
+            <div>
+              <div style={{ fontSize: '3rem', fontWeight: '800', color: '#2563eb', marginBottom: '0.5rem', lineHeight: 1 }}>5+</div>
+              <div style={{ color: '#64748b', fontWeight: 600, fontSize: '1.1rem' }}>Profesyonel Tema</div>
+            </div>
+            <div>
+              <div style={{ fontSize: '3rem', fontWeight: '800', color: '#9333ea', marginBottom: '0.5rem', lineHeight: 1 }}>%100</div>
+              <div style={{ color: '#64748b', fontWeight: 600, fontSize: '1.1rem' }}>Ücretsiz Kullanım</div>
+            </div>
+            <div>
+              <div style={{ fontSize: '3rem', fontWeight: '800', color: '#059669', marginBottom: '0.5rem', lineHeight: 1 }}>Aa</div>
+              <div style={{ color: '#64748b', fontWeight: 600, fontSize: '1.1rem' }}>Zengin Yazı Tipleri</div>
+            </div>
+            <div>
+              <div style={{ fontSize: '3rem', fontWeight: '800', color: '#ea580c', marginBottom: '0.5rem', lineHeight: 1 }}>PDF</div>
+              <div style={{ color: '#64748b', fontWeight: 600, fontSize: '1.1rem' }}>Anında PDF Çıktısı</div>
+            </div>
+          </div>
+        </section>
 
+        {/* Tests Highlight Section */}
+        <section style={{ background: '#f8fafc', padding: '5rem 2rem' }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+              <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem' }}>
+                Kendinizi Test Edin
+              </h2>
+              <p style={{ fontSize: '1.1rem', color: '#64748b', maxWidth: '600px', margin: '0 auto' }}>
+                Sadece CV oluşturmakla kalmayın, seviyenizi ölçüp profilinize değer katın. Testleri çözün, becerilerinizi kanıtlayın.
+              </p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+              <div style={{ background: 'white', padding: '2.5rem', borderRadius: '24px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', textAlign: 'center' }}>
+                <div style={{ width: 64, height: 64, background: '#fef2f2', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', color: '#ef4444' }}>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                </div>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>İngilizce Seviye Tespiti</h3>
+                <p style={{ color: '#64748b', marginBottom: '2rem', lineHeight: 1.6 }}>
+                  A1'den C1'e uzanan kapsamlı sorularla İngilizce gramer ve kelime bilginizi test edin. Sertifikanızı hemen alın!
+                </p>
+                <button onClick={() => navigate('/test/english')} style={{ width: '100%', padding: '0.75rem', background: '#ef4444', color: 'white', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                  Teste Başla
+                </button>
+              </div>
+
+              <div style={{ background: 'white', padding: '2.5rem', borderRadius: '24px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', textAlign: 'center' }}>
+                <div style={{ width: 64, height: 64, background: '#f3e8ff', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', color: '#9333ea' }}>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-3.46-3.52 2.5 2.5 0 0 1-1.06-5.27 2.5 2.5 0 0 1 3.96-2.5A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 3.46-3.52 2.5 2.5 0 0 0 1.06-5.27 2.5 2.5 0 0 0-3.96-2.5A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+                </div>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>Kariyer Yönelim Testi</h3>
+                <p style={{ color: '#64748b', marginBottom: '2rem', lineHeight: 1.6 }}>
+                  Gerçek iş hayatı senaryolarına dayalı analizlerle hangi çalışma tarzına ve profile uygun olduğunuzu keşfedin.
+                </p>
+                <button onClick={() => navigate('/test/career')} style={{ width: '100%', padding: '0.75rem', background: '#9333ea', color: 'white', border: 'none', borderRadius: '12px', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                  Teste Başla
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
         {/* NUARKU Banner */}
         <section style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', padding: '5rem 2rem', color: 'white', textAlign: 'center' }}>
           <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
