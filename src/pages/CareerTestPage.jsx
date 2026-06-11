@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCV } from '../context/CVContext';
 import { ArrowLeft, CheckCircle, Brain, RotateCcw, Download } from 'lucide-react';
-import html2canvas from 'html2canvas';
+import { toJpeg } from 'html-to-image';
 
 const questions = [
   { 
@@ -122,19 +122,6 @@ export const CareerTestPage = () => {
   const [isFinished, setIsFinished] = useState(false);
   const [result, setResult] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
-  const [logoBase64, setLogoBase64] = useState('');
-
-  // Preload logo as base64 for html2canvas
-  useEffect(() => {
-    fetch('/logo.png')
-      .then(res => res.blob())
-      .then(blob => {
-        const reader = new FileReader();
-        reader.onloadend = () => setLogoBase64(reader.result);
-        reader.readAsDataURL(blob);
-      })
-      .catch(err => console.error('Logo loading error:', err));
-  }, []);
 
   // Check if there is a previous test result
   useEffect(() => {
@@ -156,12 +143,15 @@ export const CareerTestPage = () => {
   const handleDownloadStory = async () => {
     const element = document.getElementById('story-card');
     if (!element) return;
-    const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: null });
-    const data = canvas.toDataURL('image/jpeg', 0.9);
-    const link = document.createElement('a');
-    link.href = data;
-    link.download = 'kariyer-test-sonucu.jpg';
-    link.click();
+    try {
+      const dataUrl = await toJpeg(element, { quality: 0.95, pixelRatio: 2 });
+      const link = document.createElement('a');
+      link.download = 'kariyer-test-sonucu.jpg';
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error('Error generating image', err);
+    }
   };
 
   const handleSelect = (optionIndex) => {
@@ -246,11 +236,7 @@ export const CareerTestPage = () => {
 
             <div style={{ position: 'relative', zIndex: 1 }}>
               <div style={{ display: 'inline-block', background: 'white', padding: '0.5rem 1rem', borderRadius: '12px', marginBottom: '2rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-                {logoBase64 ? (
-                  <img src={logoBase64} alt="CV Stüdyo" style={{ height: '30px', display: 'block' }} />
-                ) : (
-                  <div style={{ height: '30px', display: 'flex', alignItems: 'center', fontWeight: 'bold', color: '#3b82f6' }}>CV STÜDYO</div>
-                )}
+                <img src="/logo.png" alt="CV Stüdyo" style={{ height: '30px', display: 'block' }} />
               </div>
               
               <div style={{ fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.8, marginBottom: '0.5rem' }}>
