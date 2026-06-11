@@ -19,10 +19,47 @@ export const EditorPanel = () => {
   const { logout } = useAuth();
   const [activeSection, setActiveSection] = useState('personal');
   
-  const handlePrint = () => {
-    // Rely completely on native printing which perfectly respects our @media print CSS
-    // Native print creates a high-quality, vector-based PDF without any of the canvas bugs.
-    window.print();
+  const handlePrint = async () => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      const element = document.querySelector('.cv-container');
+      const wrapper = document.querySelector('.cv-wrapper');
+      const panel = document.querySelector('.preview-panel');
+      if (!element || !wrapper || !panel) return;
+      
+      const originalTransform = wrapper.style.transform;
+      const originalOverflow = panel.style.overflow;
+      const originalHeight = panel.style.height;
+      const originalWidth = panel.style.width;
+      
+      // Temporarily expand panel to fit full A4 without mobile clipping
+      wrapper.style.transform = 'none';
+      panel.style.overflow = 'visible';
+      panel.style.height = 'auto';
+      panel.style.width = '800px';
+      
+      const opt = {
+        margin:       0,
+        filename:     `${cvData.personalInfo?.fullName || 'CV'}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, letterRendering: true, windowWidth: 800 },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      
+      try {
+        await html2pdf().set(opt).from(element).save();
+      } catch (err) {
+        console.error('PDF generation error:', err);
+      } finally {
+        wrapper.style.transform = originalTransform;
+        panel.style.overflow = originalOverflow;
+        panel.style.height = originalHeight;
+        panel.style.width = originalWidth;
+      }
+    } else {
+      window.print();
+    }
   };
 
   const handleLogout = async () => {
