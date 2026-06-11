@@ -116,20 +116,30 @@ export const EnglishTestPage = () => {
       
       const originalBoxShadow = element.style.boxShadow;
       const originalWidth = element.style.width;
+      const originalHeight = element.style.height;
       const originalMaxWidth = element.style.maxWidth;
       const originalPadding = element.style.padding;
+      const originalPosition = element.style.position;
+      const originalTop = element.style.top;
+      const originalLeft = element.style.left;
+      const originalZIndex = element.style.zIndex;
       
+      // Force exact A4 Landscape proportions and prevent viewport clipping
       element.style.boxShadow = 'none';
-      element.style.width = '800px';
-      element.style.maxWidth = '800px';
-      // Reduce padding slightly to ensure it fits A4 landscape perfectly
-      element.style.padding = '2rem';
+      element.style.width = '297mm';
+      element.style.height = '209.5mm'; // slightly less than 210mm to avoid 2nd page
+      element.style.maxWidth = '297mm';
+      element.style.padding = '3rem';
+      element.style.position = 'absolute';
+      element.style.top = '0';
+      element.style.left = '0';
+      element.style.zIndex = '9999';
       
       const opt = {
         margin:       0,
         filename:     `Ingilizce-Sertifikasi.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, windowWidth: 800 },
+        html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
       };
       
@@ -140,8 +150,13 @@ export const EnglishTestPage = () => {
       } finally {
         element.style.boxShadow = originalBoxShadow;
         element.style.width = originalWidth;
+        element.style.height = originalHeight;
         element.style.maxWidth = originalMaxWidth;
         element.style.padding = originalPadding;
+        element.style.position = originalPosition;
+        element.style.top = originalTop;
+        element.style.left = originalLeft;
+        element.style.zIndex = originalZIndex;
       }
     } else {
       window.print();
