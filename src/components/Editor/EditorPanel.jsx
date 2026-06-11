@@ -23,27 +23,42 @@ export const EditorPanel = () => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     
     if (isMobile) {
-      const wrapper = document.querySelector('.cv-wrapper');
       const element = document.querySelector('.cv-container');
-      if (!wrapper || !element) return;
+      if (!element) return;
       
-      const originalTransform = wrapper.style.transform;
-      wrapper.style.transform = 'none';
+      // Clone the element to render it off-screen in exact A4 dimensions
+      const clone = element.cloneNode(true);
+      
+      // Apply strict A4 dimensions and isolate from mobile CSS
+      Object.assign(clone.style, {
+        position: 'absolute',
+        left: '-9999px',
+        top: 0,
+        width: '210mm',
+        height: '297mm',
+        minHeight: '297mm',
+        transform: 'none',
+        margin: 0,
+        padding: 0,
+        boxSizing: 'border-box'
+      });
+      
+      document.body.appendChild(clone);
       
       const opt = {
         margin:       0,
         filename:     `${cvData.personalInfo?.fullName || 'CV'}.pdf`,
         image:        { type: 'jpeg', quality: 1 },
-        html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+        html2canvas:  { scale: 2, useCORS: true, letterRendering: true, windowWidth: 794 }, // 794px is ~210mm
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
       
       try {
-        await html2pdf().set(opt).from(element).save();
+        await html2pdf().set(opt).from(clone).save();
       } catch (err) {
         console.error('PDF generation error:', err);
       } finally {
-        wrapper.style.transform = originalTransform;
+        document.body.removeChild(clone);
       }
     } else {
       window.print();
