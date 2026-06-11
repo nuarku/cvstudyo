@@ -114,33 +114,48 @@ export const EnglishTestPage = () => {
       const element = document.querySelector('.certificate-container');
       if (!element) return;
       
-      // We use a clone to guarantee it renders at 800px width without being squished by the mobile screen
-      const clone = element.cloneNode(true);
-      document.body.appendChild(clone);
-      clone.style.position = 'absolute';
-      clone.style.top = '-9999px';
-      clone.style.left = '-9999px';
-      clone.style.width = '800px';
-      clone.style.maxWidth = 'none';
-      clone.style.boxShadow = 'none';
-      clone.style.padding = '4rem'; // ensure generous padding for the capture
-      clone.style.margin = '0';
+      const parent = element.parentElement;
+      
+      const originalAlign = parent.style.alignItems;
+      const originalParentPadding = parent.style.padding;
+      const originalWidth = element.style.width;
+      const originalHeight = element.style.height;
+      const originalMaxWidth = element.style.maxWidth;
+      const originalBoxShadow = element.style.boxShadow;
+      const scrollPos = window.scrollY;
+      
+      window.scrollTo(0, 0);
+      
+      // Ensure X=0 by left-aligning and removing parent padding
+      parent.style.alignItems = 'flex-start';
+      parent.style.padding = '0';
+      
+      // Force exactly 800x565 (A4 landscape ratio)
+      element.style.width = '800px';
+      element.style.height = '565px';
+      element.style.maxWidth = 'none';
+      element.style.boxShadow = 'none';
       
       try {
-        // html2pdf internally uses html2canvas and jsPDF. We can use html2pdf directly on the clone!
         const opt = {
           margin:       0,
           filename:     `Ingilizce-Sertifikasi.pdf`,
           image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2, useCORS: true, windowWidth: 800, letterRendering: true },
-          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+          html2canvas:  { scale: 2, useCORS: true, windowWidth: 800, windowHeight: 565, scrollX: 0, scrollY: 0 },
+          jsPDF:        { unit: 'mm', format: [800, 565], orientation: 'landscape' } // directly use pixel dimensions to perfectly fit the A4 ratio
         };
         
-        await html2pdf().set(opt).from(clone).save();
+        await html2pdf().set(opt).from(element).save();
       } catch (err) {
         console.error('PDF generation error:', err);
       } finally {
-        document.body.removeChild(clone);
+        parent.style.alignItems = originalAlign;
+        parent.style.padding = originalParentPadding;
+        element.style.width = originalWidth;
+        element.style.height = originalHeight;
+        element.style.maxWidth = originalMaxWidth;
+        element.style.boxShadow = originalBoxShadow;
+        window.scrollTo(0, scrollPos);
       }
     } else {
       window.print();
