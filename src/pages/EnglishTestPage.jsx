@@ -36,7 +36,7 @@ const questions = [
 
 export const EnglishTestPage = () => {
   const navigate = useNavigate();
-  const { cvData, updateTests } = useCV();
+  const { cvData, updateTests, addLanguage, updateLanguage } = useCV();
   const { currentUser } = useAuth();
   
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -93,6 +93,15 @@ export const EnglishTestPage = () => {
     const resultData = { score, level, date: new Date().toISOString() };
     setResult(resultData);
     updateTests('english', resultData);
+
+    // Otomatik Yabancı Dil Ekleme
+    const existingEnglish = (cvData.languages || []).find(lang => lang.language.toLowerCase() === 'i̇ngilizce' || lang.language.toLowerCase() === 'ingilizce' || lang.language.toLowerCase() === 'english');
+    if (existingEnglish) {
+      updateLanguage(existingEnglish.id, { proficiency: level });
+    } else {
+      addLanguage({ language: 'İngilizce', proficiency: level });
+    }
+
     setIsFinished(true);
     setShowHistory(false);
   };
