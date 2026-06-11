@@ -46,20 +46,19 @@ export const EditorPanel = () => {
     <div className="editor-panel">
       <div className="editor-header">
         <div style={{ flex: 1, cursor: 'pointer' }} onClick={() => navigate('/dashboard')}>
-          <img src="/logo.png" alt="CV Stüdyo" style={{ height: '32px', marginBottom: '0.25rem' }} />
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', margin: 0 }}>Bilgilerinizi girin ve anında önizleyin.</p>
+          <img src="/logo.png" alt="CV Stüdyo" style={{ height: '32px' }} />
         </div>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <button className="btn-secondary" onClick={() => navigate('/dashboard')} style={{ padding: '0.6rem' }} title="Dashboard'a Dön">
+          <button className="btn-secondary hide-text-mobile" onClick={() => navigate('/dashboard')} style={{ padding: '0.6rem' }} title="Dashboard'a Dön">
             <LayoutDashboard size={18} />
             <span style={{ fontSize: '0.85rem' }}>Dashboard</span>
           </button>
           <button className="btn-secondary" onClick={handleLogout} style={{ padding: '0.6rem', borderRadius: '50%' }} title="Çıkış Yap">
             <LogOut size={18} />
           </button>
-          <button className="btn-primary" onClick={handlePrint}>
+          <button className="btn-primary hide-text-mobile" onClick={handlePrint} title="PDF İndir">
             <Download size={18} />
-            PDF İndir
+            <span>PDF İndir</span>
           </button>
         </div>
       </div>
