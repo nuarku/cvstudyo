@@ -124,7 +124,16 @@ export const EnglishTestPage = () => {
       const originalBoxShadow = element.style.boxShadow;
       const scrollPos = window.scrollY;
       
+      const originalBodyWidth = document.body.style.width;
+      const originalBodyOverflow = document.body.style.overflow;
+      const originalHtmlOverflow = document.documentElement.style.overflow;
+      
       window.scrollTo(0, 0);
+      
+      // Force the entire page to be 800px wide so iOS Safari does not clip the rendering
+      document.body.style.width = '800px';
+      document.body.style.overflow = 'visible';
+      document.documentElement.style.overflow = 'visible';
       
       // Ensure X=0 by left-aligning and removing parent padding
       parent.style.alignItems = 'flex-start';
@@ -155,6 +164,11 @@ export const EnglishTestPage = () => {
         element.style.height = originalHeight;
         element.style.maxWidth = originalMaxWidth;
         element.style.boxShadow = originalBoxShadow;
+        
+        document.body.style.width = originalBodyWidth;
+        document.body.style.overflow = originalBodyOverflow;
+        document.documentElement.style.overflow = originalHtmlOverflow;
+        
         window.scrollTo(0, scrollPos);
       }
     } else {
