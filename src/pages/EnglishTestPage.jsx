@@ -114,62 +114,50 @@ export const EnglishTestPage = () => {
       const element = document.querySelector('.certificate-container');
       if (!element) return;
       
-      const parent = element.parentElement;
+      const clone = element.cloneNode(true);
+      document.body.appendChild(clone);
       
-      const originalAlign = parent.style.alignItems;
-      const originalParentPadding = parent.style.padding;
-      const originalWidth = element.style.width;
-      const originalHeight = element.style.height;
-      const originalMaxWidth = element.style.maxWidth;
-      const originalBoxShadow = element.style.boxShadow;
-      const scrollPos = window.scrollY;
+      // Place clone at top-left but completely behind the page so it's invisible to the user
+      clone.style.position = 'absolute';
+      clone.style.top = '0';
+      clone.style.left = '0';
+      clone.style.zIndex = '-9999';
       
-      const originalBodyWidth = document.body.style.width;
-      const originalBodyOverflow = document.body.style.overflow;
-      const originalHtmlOverflow = document.documentElement.style.overflow;
-      
-      window.scrollTo(0, 0);
-      
-      // Force the entire page to be 800px wide so iOS Safari does not clip the rendering
-      document.body.style.width = '800px';
-      document.body.style.overflow = 'visible';
-      document.documentElement.style.overflow = 'visible';
-      
-      // Ensure X=0 by left-aligning and removing parent padding
-      parent.style.alignItems = 'flex-start';
-      parent.style.padding = '0';
-      
-      // Force exactly 800x565 (A4 landscape ratio)
-      element.style.width = '800px';
-      element.style.height = '565px';
-      element.style.maxWidth = 'none';
-      element.style.boxShadow = 'none';
+      // Force exact A4 dimensions in pixels at 96 DPI (297mm x 210mm)
+      clone.style.width = '1122px';
+      clone.style.height = '793px';
+      clone.style.maxWidth = 'none';
+      clone.style.maxHeight = 'none';
+      clone.style.margin = '0';
+      clone.style.boxShadow = 'none';
+      clone.style.transform = 'none';
+      clone.style.overflow = 'hidden';
       
       try {
-        const opt = {
-          margin:       0,
-          filename:     `Ingilizce-Sertifikasi.pdf`,
-          image:        { type: 'jpeg', quality: 0.98 },
-          html2canvas:  { scale: 2, useCORS: true, windowWidth: 800, windowHeight: 565, scrollX: 0, scrollY: 0 },
-          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
-        };
+        const dataUrl = await toJpeg(clone, {
+          quality: 0.98,
+          pixelRatio: 2,
+          canvasWidth: 1122,
+          canvasHeight: 793,
+          backgroundColor: '#ffffff',
+          style: {
+            transform: 'none',
+          }
+        });
         
-        await html2pdf().set(opt).from(element).save();
+        const pdf = new jsPDF({
+          orientation: 'landscape',
+          unit: 'mm',
+          format: 'a4'
+        });
+        
+        // Force the image to exactly fill the 297x210mm A4 landscape page
+        pdf.addImage(dataUrl, 'JPEG', 0, 0, 297, 210);
+        pdf.save('Ingilizce-Sertifikasi.pdf');
       } catch (err) {
-        console.error('PDF generation error:', err);
+        console.error('PDF error:', err);
       } finally {
-        parent.style.alignItems = originalAlign;
-        parent.style.padding = originalParentPadding;
-        element.style.width = originalWidth;
-        element.style.height = originalHeight;
-        element.style.maxWidth = originalMaxWidth;
-        element.style.boxShadow = originalBoxShadow;
-        
-        document.body.style.width = originalBodyWidth;
-        document.body.style.overflow = originalBodyOverflow;
-        document.documentElement.style.overflow = originalHtmlOverflow;
-        
-        window.scrollTo(0, scrollPos);
+        document.body.removeChild(clone);
       }
     } else {
       window.print();
