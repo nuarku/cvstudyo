@@ -420,21 +420,6 @@ button {
   .hide-on-print {
     display: none !important;
   }
-
-  .certificate-container, .certificate-container * {
-    visibility: visible;
-  }
-  .certificate-container {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    transform: none;
-    box-shadow: none !important;
-    border: none !important;
-    padding: 2rem !important;
-    margin: 0 !important;
-  }
 }
 
 @media (max-width: 900px) {
