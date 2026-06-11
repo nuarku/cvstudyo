@@ -33,11 +33,18 @@ export const EditorPanel = () => {
       const originalHeight = panel.style.height;
       const originalWidth = panel.style.width;
       
+      const originalElementHeight = element.style.height;
+      const originalElementBoxShadow = element.style.boxShadow;
+      
       // Temporarily expand panel to fit full A4 without mobile clipping
       wrapper.style.transform = 'none';
       panel.style.overflow = 'visible';
       panel.style.height = 'auto';
       panel.style.width = '800px';
+      
+      // Fix sub-pixel overflow causing empty second page
+      element.style.height = '296.5mm';
+      element.style.boxShadow = 'none';
       
       const opt = {
         margin:       0,
@@ -56,6 +63,8 @@ export const EditorPanel = () => {
         panel.style.overflow = originalOverflow;
         panel.style.height = originalHeight;
         panel.style.width = originalWidth;
+        element.style.height = originalElementHeight;
+        element.style.boxShadow = originalElementBoxShadow;
       }
     } else {
       window.print();
