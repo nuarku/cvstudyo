@@ -27,9 +27,8 @@ export const ClassicTemplate = ({ data }) => {
         marginBottom: '2rem'
       }}>
         {personalInfo.photoUrl && (
-          <img 
-            src={personalInfo.photoUrl} 
-            alt="Profil" 
+          <div 
+            title="Profil" 
             style={{ 
               width: '100px', 
               height: '100px', 
@@ -37,9 +36,12 @@ export const ClassicTemplate = ({ data }) => {
               minHeight: '100px',
               flexShrink: 0,
               borderRadius: personalInfo.photoShape === 'round' ? '50%' : '8px', 
-              objectFit: 'cover', 
+              backgroundImage: `url(${personalInfo.photoUrl})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
               border: `3px solid ${theme.primaryColor}`, 
-              marginBottom: '1rem' 
+              marginBottom: '1rem',
+              display: 'inline-block'
             }} 
           />
         )}

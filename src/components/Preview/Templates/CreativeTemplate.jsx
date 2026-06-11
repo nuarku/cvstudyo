@@ -30,10 +30,8 @@ export const CreativeTemplate = ({ data }) => {
       }}>
         <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
           {personalInfo.photoUrl ? (
-            <img 
-              src={personalInfo.photoUrl} 
-              alt="Profil" 
-              
+            <div 
+              title="Profil" 
               style={{ 
                 width: '120px', 
                 height: '120px', 
@@ -41,7 +39,9 @@ export const CreativeTemplate = ({ data }) => {
                 minHeight: '120px',
                 flexShrink: 0,
                 borderRadius: personalInfo.photoShape === 'round' ? '50%' : '8px', 
-                objectFit: 'cover', 
+                backgroundImage: `url(${personalInfo.photoUrl})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
                 margin: '0 auto 1.5rem', 
                 border: '3px solid rgba(255,255,255,0.5)', 
                 display: 'block' 

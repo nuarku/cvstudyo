@@ -218,6 +218,7 @@ export const CareerTestPage = () => {
           <div 
             id="story-card"
             style={{ 
+              fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
               background: 'linear-gradient(135deg, #7e22ce 0%, #3b82f6 100%)', 
               padding: '4rem 2rem', 
               borderRadius: '24px', 

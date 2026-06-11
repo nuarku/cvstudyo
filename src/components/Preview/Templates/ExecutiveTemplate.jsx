@@ -40,10 +40,8 @@ export const ExecutiveTemplate = ({ data }) => {
         borderBottom: `6px solid ${theme.primaryColor}`
       }}>
         {personalInfo.photoUrl && (
-          <img 
-            src={personalInfo.photoUrl} 
-            alt="Profil" 
-            
+          <div 
+            title="Profil" 
             style={{ 
               width: '130px', 
               height: '130px', 
@@ -51,7 +49,9 @@ export const ExecutiveTemplate = ({ data }) => {
               minHeight: '130px',
               flexShrink: 0,
               borderRadius: personalInfo.photoShape === 'round' ? '50%' : '12px', 
-              objectFit: 'cover', 
+              backgroundImage: `url(${personalInfo.photoUrl})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
               border: '4px solid #334155' 
             }} 
           />

@@ -39,10 +39,8 @@ export const MinimalistTemplate = ({ data }) => {
           </div>
         </div>
         {personalInfo.photoUrl && (
-          <img 
-            src={personalInfo.photoUrl} 
-            alt="Profil" 
-            
+          <div 
+            title="Profil" 
             style={{ 
               width: '100px', 
               height: '100px', 
@@ -50,7 +48,9 @@ export const MinimalistTemplate = ({ data }) => {
               minHeight: '100px',
               flexShrink: 0,
               borderRadius: personalInfo.photoShape === 'round' ? '50%' : '8px', 
-              objectFit: 'cover',
+              backgroundImage: `url(${personalInfo.photoUrl})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
               filter: 'grayscale(20%)'
             }} 
           />

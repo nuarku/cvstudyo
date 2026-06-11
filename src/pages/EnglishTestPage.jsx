@@ -4,6 +4,7 @@ import { useCV } from '../context/CVContext';
 import { useAuth } from '../context/AuthContext';
 import { ArrowLeft, BookOpen, Download, RotateCcw, CheckCircle } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
+import html2pdf from 'html2pdf.js';
 
 // 20 Questions - CEFR Aligned (A1 to C1/C2)
 const questions = [
@@ -106,6 +107,47 @@ export const EnglishTestPage = () => {
     setShowHistory(false);
   };
 
+  const handlePrint = async () => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      const element = document.querySelector('.certificate-container');
+      if (!element) return;
+      
+      const originalBoxShadow = element.style.boxShadow;
+      const originalWidth = element.style.width;
+      const originalMaxWidth = element.style.maxWidth;
+      const originalPadding = element.style.padding;
+      
+      element.style.boxShadow = 'none';
+      element.style.width = '800px';
+      element.style.maxWidth = '800px';
+      // Reduce padding slightly to ensure it fits A4 landscape perfectly
+      element.style.padding = '2rem';
+      
+      const opt = {
+        margin:       0,
+        filename:     `Ingilizce-Sertifikasi.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, windowWidth: 800 },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+      };
+      
+      try {
+        await html2pdf().set(opt).from(element).save();
+      } catch (err) {
+        console.error('PDF generation error:', err);
+      } finally {
+        element.style.boxShadow = originalBoxShadow;
+        element.style.width = originalWidth;
+        element.style.maxWidth = originalMaxWidth;
+        element.style.padding = originalPadding;
+      }
+    } else {
+      window.print();
+    }
+  };
+
   // Common Header component for test pages
   const TestHeader = () => (
     <div className="hide-on-print" style={{ background: 'white', padding: '1rem 2rem', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -196,7 +238,7 @@ export const EnglishTestPage = () => {
 
           <div className="hide-on-print" style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
             <button 
-              onClick={() => window.print()}
+              onClick={handlePrint}
               className="btn-primary"
               style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
             >
