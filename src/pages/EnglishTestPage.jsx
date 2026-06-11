@@ -161,7 +161,7 @@ export const EnglishTestPage = () => {
             <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
               <p style={{ color: '#475569', fontSize: '1.1rem', marginBottom: '1rem' }}>Bu sertifika,</p>
               <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#1e293b', borderBottom: '2px solid #e2e8f0', display: 'inline-block', paddingBottom: '0.5rem', marginBottom: '1rem' }}>
-                {currentUser?.email?.split('@')[0].toUpperCase() || 'KULLANICI'}
+                {(cvData?.personalInfo?.fullName || currentUser?.email?.split('@')[0] || 'KULLANICI').toUpperCase()}
               </h2>
               <p style={{ color: '#475569', fontSize: '1.1rem', maxWidth: '500px', margin: '1rem auto' }}>
                 tarafından tamamlanan İngilizce değerlendirme sınavı sonucunda aşağıdaki tahmini seviyeye ulaştığını gösterir.
