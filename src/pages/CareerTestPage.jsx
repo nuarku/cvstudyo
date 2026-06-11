@@ -232,7 +232,9 @@ export const CareerTestPage = () => {
             <div style={{ position: 'absolute', bottom: '-50px', left: '-50px', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', filter: 'blur(30px)' }}></div>
 
             <div style={{ position: 'relative', zIndex: 1 }}>
-              <img src="/logo.png" alt="CV Stüdyo" style={{ height: '30px', marginBottom: '2rem', filter: 'brightness(0) invert(1)' }} />
+              <div style={{ display: 'inline-block', background: 'white', padding: '0.5rem 1rem', borderRadius: '12px', marginBottom: '2rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+                <img src="/logo.png" alt="CV Stüdyo" style={{ height: '30px', display: 'block' }} />
+              </div>
               
               <div style={{ fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.8, marginBottom: '0.5rem' }}>
                 Kariyer Yönelim Testi Sonucu
