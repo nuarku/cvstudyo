@@ -114,49 +114,33 @@ export const EnglishTestPage = () => {
       const element = document.querySelector('.certificate-container');
       if (!element) return;
       
-      const originalBoxShadow = element.style.boxShadow;
-      const originalWidth = element.style.width;
-      const originalHeight = element.style.height;
-      const originalMaxWidth = element.style.maxWidth;
-      const originalPadding = element.style.padding;
-      const originalPosition = element.style.position;
-      const originalTop = element.style.top;
-      const originalLeft = element.style.left;
-      const originalZIndex = element.style.zIndex;
-      
-      // Force exact A4 Landscape proportions and prevent viewport clipping
-      element.style.boxShadow = 'none';
-      element.style.width = '297mm';
-      element.style.height = '209.5mm'; // slightly less than 210mm to avoid 2nd page
-      element.style.maxWidth = '297mm';
-      element.style.padding = '3rem';
-      element.style.position = 'absolute';
-      element.style.top = '0';
-      element.style.left = '0';
-      element.style.zIndex = '9999';
-      
-      const opt = {
-        margin:       0,
-        filename:     `Ingilizce-Sertifikasi.pdf`,
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
-      };
+      // We use a clone to guarantee it renders at 800px width without being squished by the mobile screen
+      const clone = element.cloneNode(true);
+      document.body.appendChild(clone);
+      clone.style.position = 'absolute';
+      clone.style.top = '-9999px';
+      clone.style.left = '-9999px';
+      clone.style.width = '800px';
+      clone.style.maxWidth = 'none';
+      clone.style.boxShadow = 'none';
+      clone.style.padding = '4rem'; // ensure generous padding for the capture
+      clone.style.margin = '0';
       
       try {
-        await html2pdf().set(opt).from(element).save();
+        // html2pdf internally uses html2canvas and jsPDF. We can use html2pdf directly on the clone!
+        const opt = {
+          margin:       0,
+          filename:     `Ingilizce-Sertifikasi.pdf`,
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true, windowWidth: 800, letterRendering: true },
+          jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+        };
+        
+        await html2pdf().set(opt).from(clone).save();
       } catch (err) {
         console.error('PDF generation error:', err);
       } finally {
-        element.style.boxShadow = originalBoxShadow;
-        element.style.width = originalWidth;
-        element.style.height = originalHeight;
-        element.style.maxWidth = originalMaxWidth;
-        element.style.padding = originalPadding;
-        element.style.position = originalPosition;
-        element.style.top = originalTop;
-        element.style.left = originalLeft;
-        element.style.zIndex = originalZIndex;
+        document.body.removeChild(clone);
       }
     } else {
       window.print();
