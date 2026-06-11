@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCV } from '../context/CVContext';
-import { ArrowLeft, CheckCircle, Brain, RotateCcw } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Brain, RotateCcw, Download } from 'lucide-react';
+import html2canvas from 'html2canvas';
 
 const questions = [
   { 
@@ -139,6 +140,17 @@ export const CareerTestPage = () => {
     setResult(null);
   };
 
+  const handleDownloadStory = async () => {
+    const element = document.getElementById('story-card');
+    if (!element) return;
+    const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: null });
+    const data = canvas.toDataURL('image/jpeg', 0.9);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = 'kariyer-test-sonucu.jpg';
+    link.click();
+  };
+
   const handleSelect = (optionIndex) => {
     setAnswers(prev => ({ ...prev, [currentQuestion]: optionIndex }));
   };
@@ -200,26 +212,62 @@ export const CareerTestPage = () => {
             </div>
           )}
 
-          <div style={{ background: 'white', padding: '3rem', borderRadius: '24px', maxWidth: '500px', width: '100%', textAlign: 'center', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}>
-            <div style={{ width: 80, height: 80, background: '#f3e8ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto' }}>
-              <CheckCircle size={40} color="#9333ea" />
-            </div>
-            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.5rem' }}>{showHistory ? 'Mevcut Profiliniz' : 'Test Tamamlandı!'}</h2>
-            <p style={{ color: '#64748b', marginBottom: '2rem' }}>Sonuçlarınız CV Stüdyo profilinizde günceldir.</p>
-            
-            <div style={{ background: '#f8fafc', padding: '2rem', borderRadius: '16px', marginBottom: '2rem' }}>
-              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#9333ea', marginBottom: '1rem' }}>{result.profile || result.title}</div>
-              <p style={{ color: '#475569', lineHeight: 1.6, margin: 0 }}>{result.desc || (profiles[result.dominantType]?.desc)}</p>
-            </div>
+          <div 
+            id="story-card"
+            style={{ 
+              background: 'linear-gradient(135deg, #7e22ce 0%, #3b82f6 100%)', 
+              padding: '4rem 2rem', 
+              borderRadius: '24px', 
+              maxWidth: '400px', 
+              width: '100%', 
+              textAlign: 'center', 
+              boxShadow: '0 20px 25px -5px rgba(0,0,0,0.2)',
+              color: 'white',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+          >
+            {/* Decorative background elements */}
+            <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '150px', height: '150px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', filter: 'blur(20px)' }}></div>
+            <div style={{ position: 'absolute', bottom: '-50px', left: '-50px', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', filter: 'blur(30px)' }}></div>
 
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <button className="btn-primary" onClick={() => navigate('/dashboard')} style={{ flex: 1, justifyContent: 'center', background: '#9333ea' }}>
-                Dashboard'a Dön
-              </button>
-              <button className="btn-secondary" onClick={startNewTest} style={{ padding: '0.75rem 1rem' }} title="Yeniden Çöz">
-                <RotateCcw size={18} />
-              </button>
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <img src="/logo.png" alt="CV Stüdyo" style={{ height: '30px', marginBottom: '2rem', filter: 'brightness(0) invert(1)' }} />
+              
+              <div style={{ fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.8, marginBottom: '0.5rem' }}>
+                Kariyer Yönelim Testi Sonucu
+              </div>
+              
+              <div style={{ width: 100, height: 100, background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem auto', border: '2px solid rgba(255,255,255,0.3)' }}>
+                <Brain size={50} color="white" />
+              </div>
+              
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem', lineHeight: 1.1, textShadow: '0 2px 10px rgba(0,0,0,0.2)' }}>
+                {result.profile || result.title}
+              </div>
+              
+              <p style={{ fontSize: '1.1rem', lineHeight: 1.5, opacity: 0.9, marginBottom: '3rem' }}>
+                "{result.desc || (profiles[result.dominantType]?.desc)}"
+              </p>
+              
+              <div style={{ padding: '1rem', background: 'rgba(0,0,0,0.2)', borderRadius: '16px', backdropFilter: 'blur(10px)', display: 'inline-block' }}>
+                <div style={{ fontSize: '0.8rem', opacity: 0.8, marginBottom: '0.25rem' }}>Sen de testini çöz:</div>
+                <div style={{ fontWeight: 600, letterSpacing: '0.05em' }}>cv-studyo-app.web.app</div>
+              </div>
             </div>
+          </div>
+
+          <div className="hide-on-print" style={{ display: 'flex', gap: '1rem', marginTop: '2rem', width: '100%', maxWidth: '400px' }}>
+            <button 
+              className="btn-primary" 
+              onClick={handleDownloadStory} 
+              style={{ flex: 1, justifyContent: 'center', background: '#9333ea', border: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+            >
+              <Download size={18} /> Görseli İndir
+            </button>
+            <button className="btn-secondary" onClick={startNewTest} style={{ padding: '0.75rem 1rem' }} title="Yeniden Çöz">
+              <RotateCcw size={18} />
+            </button>
           </div>
         </div>
       </div>
