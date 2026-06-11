@@ -157,14 +157,16 @@ export const AdminPage = () => {
           </div>
           
           <div style={{ position: 'relative', width: '100%', maxWidth: '350px' }}>
-            <Search size={18} color="#94a3b8" style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)' }} />
-            <input 
-              type="text" 
-              placeholder="İsim veya E-posta ara..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ padding: '0.85rem 1.25rem 0.85rem 3rem', width: '100%', borderRadius: '9999px', border: '1px solid #e2e8f0', outline: 'none', marginBottom: '1rem' }}
-            />
+            <div style={{ position: 'relative', width: '100%', marginBottom: '1rem' }}>
+              <Search size={18} color="#94a3b8" style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)' }} />
+              <input 
+                type="text" 
+                placeholder="İsim veya E-posta ara..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{ padding: '0.85rem 1.25rem 0.85rem 3rem', width: '100%', borderRadius: '9999px', border: '1px solid #e2e8f0', outline: 'none' }}
+              />
+            </div>
             <button className="btn-secondary" onClick={handleExportCSV} style={{ width: '100%', justifyContent: 'center' }}>
               <Download size={18} /> Tümünü İndir (CSV)
             </button>

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCV } from '../context/CVContext';
-import { ArrowLeft, CheckCircle, Brain } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Brain, RotateCcw } from 'lucide-react';
 
 const questions = [
   { 
@@ -115,11 +115,29 @@ const profiles = {
 
 export const CareerTestPage = () => {
   const navigate = useNavigate();
-  const { updateTests } = useCV();
+  const { cvData, updateTests } = useCV();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [isFinished, setIsFinished] = useState(false);
   const [result, setResult] = useState(null);
+  const [showHistory, setShowHistory] = useState(false);
+
+  // Check if there is a previous test result
+  useEffect(() => {
+    if (cvData?.tests?.career && !isFinished) {
+      setResult(cvData.tests.career);
+      setShowHistory(true);
+      setIsFinished(true);
+    }
+  }, [cvData]);
+
+  const startNewTest = () => {
+    setShowHistory(false);
+    setIsFinished(false);
+    setCurrentQuestion(0);
+    setAnswers({});
+    setResult(null);
+  };
 
   const handleSelect = (optionIndex) => {
     setAnswers(prev => ({ ...prev, [currentQuestion]: optionIndex }));
@@ -144,29 +162,65 @@ export const CareerTestPage = () => {
     let dominantType = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
     const profile = profiles[dominantType];
 
-    setResult(profile);
-    updateTests('career', { profile: profile.title, dominantType, date: new Date().toISOString() });
+    const resultData = { profile: profile.title, dominantType, desc: profile.desc, date: new Date().toISOString() };
+    setResult(resultData);
+    updateTests('career', resultData);
     setIsFinished(true);
+    setShowHistory(false);
   };
+
+  // Common Header component for test pages
+  const TestHeader = () => (
+    <div className="hide-on-print" style={{ background: 'white', padding: '1rem 2rem', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ cursor: 'pointer' }} onClick={() => navigate('/dashboard')}>
+        <img src="/logo.png" alt="CV Stüdyo" style={{ height: '32px' }} />
+      </div>
+      <button 
+        onClick={() => navigate('/dashboard')}
+        style={{ background: 'transparent', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#475569', cursor: 'pointer', padding: '0.5rem 1rem', borderRadius: '8px', fontWeight: 600, transition: 'all 0.2s' }}
+      >
+        <ArrowLeft size={16} /> Dashboard'a Dön
+      </button>
+    </div>
+  );
 
   if (isFinished) {
     return (
-      <div style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
-        <div style={{ background: 'white', padding: '3rem', borderRadius: '24px', maxWidth: '500px', width: '100%', textAlign: 'center', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}>
-          <div style={{ width: 80, height: 80, background: '#f3e8ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto' }}>
-            <CheckCircle size={40} color="#9333ea" />
-          </div>
-          <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.5rem' }}>Test Tamamlandı!</h2>
-          <p style={{ color: '#64748b', marginBottom: '2rem' }}>Sonuçlarınız profilinize kaydedildi.</p>
-          
-          <div style={{ background: '#f8fafc', padding: '2rem', borderRadius: '16px', marginBottom: '2rem' }}>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#9333ea', marginBottom: '1rem' }}>{result.title}</div>
-            <p style={{ color: '#475569', lineHeight: 1.6, margin: 0 }}>{result.desc}</p>
-          </div>
+      <div style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', flexDirection: 'column' }}>
+        <TestHeader />
 
-          <button className="btn-primary" onClick={() => navigate('/dashboard')} style={{ width: '100%', justifyContent: 'center', background: '#9333ea' }}>
-            Dashboard'a Dön
-          </button>
+        <div style={{ padding: '3rem 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+          
+          {showHistory && (
+            <div className="hide-on-print" style={{ background: '#f3e8ff', border: '1px solid #d8b4fe', borderRadius: '12px', padding: '1rem 2rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: '500px' }}>
+              <div>
+                <h3 style={{ margin: '0 0 0.25rem 0', color: '#6b21a8', fontSize: '1.1rem' }}>Önceki Test Sonucunuz</h3>
+                <p style={{ margin: 0, color: '#9333ea', fontSize: '0.9rem' }}>Bu testi daha önce {new Date(result.date).toLocaleDateString('tr-TR')} tarihinde çözdünüz.</p>
+              </div>
+            </div>
+          )}
+
+          <div style={{ background: 'white', padding: '3rem', borderRadius: '24px', maxWidth: '500px', width: '100%', textAlign: 'center', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)' }}>
+            <div style={{ width: 80, height: 80, background: '#f3e8ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto' }}>
+              <CheckCircle size={40} color="#9333ea" />
+            </div>
+            <h2 style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', marginBottom: '0.5rem' }}>{showHistory ? 'Mevcut Profiliniz' : 'Test Tamamlandı!'}</h2>
+            <p style={{ color: '#64748b', marginBottom: '2rem' }}>Sonuçlarınız CV Stüdyo profilinizde günceldir.</p>
+            
+            <div style={{ background: '#f8fafc', padding: '2rem', borderRadius: '16px', marginBottom: '2rem' }}>
+              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#9333ea', marginBottom: '1rem' }}>{result.profile || result.title}</div>
+              <p style={{ color: '#475569', lineHeight: 1.6, margin: 0 }}>{result.desc || (profiles[result.dominantType]?.desc)}</p>
+            </div>
+
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <button className="btn-primary" onClick={() => navigate('/dashboard')} style={{ flex: 1, justifyContent: 'center', background: '#9333ea' }}>
+                Dashboard'a Dön
+              </button>
+              <button className="btn-secondary" onClick={startNewTest} style={{ padding: '0.75rem 1rem' }} title="Yeniden Çöz">
+                <RotateCcw size={18} />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -175,67 +229,65 @@ export const CareerTestPage = () => {
   const q = questions[currentQuestion];
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f8fafc', padding: '2rem' }}>
-      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <button 
-          onClick={() => navigate('/dashboard')}
-          style={{ background: 'none', border: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#64748b', cursor: 'pointer', padding: 0, marginBottom: '2rem', fontWeight: 600 }}
-        >
-          <ArrowLeft size={18} /> Dashboard'a Dön
-        </button>
+    <div style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', flexDirection: 'column' }}>
+      <TestHeader />
 
-        <div style={{ background: 'white', borderRadius: '24px', padding: '3rem', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-            <div style={{ width: 48, height: 48, background: '#f3e8ff', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9333ea' }}>
-              <Brain size={24} />
+      <div style={{ padding: '3rem 2rem', flex: 1 }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+
+          <div style={{ background: 'white', borderRadius: '24px', padding: '3rem', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+              <div style={{ width: 48, height: 48, background: '#f3e8ff', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9333ea' }}>
+                <Brain size={24} />
+              </div>
+              <div>
+                <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>Kariyer Yönelim Testi</h1>
+                <p style={{ color: '#64748b', margin: '0.25rem 0 0 0', fontSize: '0.9rem' }}>Soru {currentQuestion + 1} / {questions.length}</p>
+              </div>
             </div>
-            <div>
-              <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>Kariyer Yönelim Testi</h1>
-              <p style={{ color: '#64748b', margin: '0.25rem 0 0 0', fontSize: '0.9rem' }}>Soru {currentQuestion + 1} / {questions.length}</p>
+
+            {/* Progress Bar */}
+            <div style={{ width: '100%', height: 6, background: '#f1f5f9', borderRadius: 3, marginBottom: '3rem', overflow: 'hidden' }}>
+              <div style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%`, height: '100%', background: '#9333ea', transition: 'width 0.3s' }}></div>
             </div>
-          </div>
 
-          {/* Progress Bar */}
-          <div style={{ width: '100%', height: 6, background: '#f1f5f9', borderRadius: 3, marginBottom: '3rem', overflow: 'hidden' }}>
-            <div style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%`, height: '100%', background: '#9333ea', transition: 'width 0.3s' }}></div>
-          </div>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#0f172a', marginBottom: '2rem', lineHeight: 1.5 }}>
+              {q.text}
+            </h2>
 
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#0f172a', marginBottom: '2rem', lineHeight: 1.5 }}>
-            {q.text}
-          </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3rem' }}>
+              {q.options.map((opt, idx) => (
+                <button 
+                  key={idx}
+                  onClick={() => handleSelect(idx)}
+                  style={{ 
+                    padding: '1rem 1.5rem', 
+                    textAlign: 'left', 
+                    background: answers[currentQuestion] === idx ? '#f3e8ff' : 'white',
+                    border: `2px solid ${answers[currentQuestion] === idx ? '#9333ea' : '#e2e8f0'}`,
+                    borderRadius: '12px',
+                    fontSize: '1.05rem',
+                    color: answers[currentQuestion] === idx ? '#7e22ce' : '#475569',
+                    fontWeight: answers[currentQuestion] === idx ? 600 : 500,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {opt.text}
+                </button>
+              ))}
+            </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3rem' }}>
-            {q.options.map((opt, idx) => (
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <button 
-                key={idx}
-                onClick={() => handleSelect(idx)}
-                style={{ 
-                  padding: '1rem 1.5rem', 
-                  textAlign: 'left', 
-                  background: answers[currentQuestion] === idx ? '#f3e8ff' : 'white',
-                  border: `2px solid ${answers[currentQuestion] === idx ? '#9333ea' : '#e2e8f0'}`,
-                  borderRadius: '12px',
-                  fontSize: '1.05rem',
-                  color: answers[currentQuestion] === idx ? '#7e22ce' : '#475569',
-                  fontWeight: answers[currentQuestion] === idx ? 600 : 500,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
+                className="btn-primary" 
+                onClick={handleNext}
+                disabled={answers[currentQuestion] === undefined}
+                style={{ opacity: answers[currentQuestion] === undefined ? 0.5 : 1, background: '#9333ea' }}
               >
-                {opt.text}
+                {currentQuestion === questions.length - 1 ? 'Testi Bitir' : 'Sonraki Soru'}
               </button>
-            ))}
-          </div>
-
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <button 
-              className="btn-primary" 
-              onClick={handleNext}
-              disabled={answers[currentQuestion] === undefined}
-              style={{ opacity: answers[currentQuestion] === undefined ? 0.5 : 1, background: '#9333ea' }}
-            >
-              {currentQuestion === questions.length - 1 ? 'Testi Bitir' : 'Sonraki Soru'}
-            </button>
+            </div>
           </div>
         </div>
       </div>
