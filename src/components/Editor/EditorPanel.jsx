@@ -19,8 +19,35 @@ export const EditorPanel = () => {
   const { logout } = useAuth();
   const [activeSection, setActiveSection] = useState('personal');
   
-  const handlePrint = () => {
-    window.print();
+  const handlePrint = async () => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      const wrapper = document.querySelector('.cv-wrapper');
+      const element = document.querySelector('.cv-container');
+      if (!wrapper || !element) return;
+      
+      const originalTransform = wrapper.style.transform;
+      wrapper.style.transform = 'none';
+      
+      const opt = {
+        margin:       0,
+        filename:     `${cvData.personalInfo?.fullName || 'CV'}.pdf`,
+        image:        { type: 'jpeg', quality: 1 },
+        html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      
+      try {
+        await html2pdf().set(opt).from(element).save();
+      } catch (err) {
+        console.error('PDF generation error:', err);
+      } finally {
+        wrapper.style.transform = originalTransform;
+      }
+    } else {
+      window.print();
+    }
   };
 
   const handleLogout = async () => {
