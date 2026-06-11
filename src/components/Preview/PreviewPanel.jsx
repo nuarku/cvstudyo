@@ -61,7 +61,9 @@ export const PreviewPanel = () => {
         className="cv-wrapper"
         style={{
           '--scale-factor': scale,
-          '--margin-offset': `-${1122 * (1 - scale)}px`
+          '--margin-offset': `-${1122 * (1 - scale)}px`,
+          '--primary-color': theme.primaryColor,
+          fontFamily: theme.fontFamily
         }}
       >
         <div className="cv-container">

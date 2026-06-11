@@ -77,9 +77,8 @@ export const CVProvider = ({ children }) => {
     loadData();
   }, [currentUser]);
 
-  // Save to Firestore & Update CSS Variables
+  // Save to Firestore
   useEffect(() => {
-    document.documentElement.style.setProperty('--primary-color', cvData.theme.primaryColor);
 
     if (currentUser && isLoaded) {
       const timeoutId = setTimeout(() => {

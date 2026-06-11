@@ -2,16 +2,23 @@ import React from 'react';
 import { useCV } from '../../context/CVContext';
 
 const COLORS = [
-  { name: 'Blue', value: '#2563eb' },
-  { name: 'Indigo', value: '#4f46e5' },
-  { name: 'Purple', value: '#9333ea' },
-  { name: 'Pink', value: '#db2777' },
-  { name: 'Red', value: '#dc2626' },
-  { name: 'Orange', value: '#ea580c' },
-  { name: 'Amber', value: '#d97706' },
-  { name: 'Green', value: '#16a34a' },
-  { name: 'Teal', value: '#0d9488' },
-  { name: 'Slate', value: '#475569' },
+  { name: 'Okyanus Mavisi', value: '#2563eb' },
+  { name: 'Gece Mavisi', value: '#1e3a8a' },
+  { name: 'İndigo', value: '#4f46e5' },
+  { name: 'Kraliyet Moru', value: '#7e22ce' },
+  { name: 'Ametist', value: '#9333ea' },
+  { name: 'Gül Kurusu', value: '#db2777' },
+  { name: 'Bordo', value: '#991b1b' },
+  { name: 'Klasik Kırmızı', value: '#dc2626' },
+  { name: 'Turuncu', value: '#ea580c' },
+  { name: 'Hardal', value: '#d97706' },
+  { name: 'Zeytin Yeşili', value: '#4d7c0f' },
+  { name: 'Orman Yeşili', value: '#166534' },
+  { name: 'Zümrüt Yeşili', value: '#16a34a' },
+  { name: 'Turkuaz', value: '#0d9488' },
+  { name: 'Çam Yeşili', value: '#0f766e' },
+  { name: 'Füme', value: '#475569' },
+  { name: 'Kömür Siyahı', value: '#1f2937' },
 ];
 
 const FONTS = [
