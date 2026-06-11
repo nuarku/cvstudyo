@@ -257,7 +257,7 @@ export const CareerTestPage = () => {
               
               <div style={{ padding: '1rem', background: 'rgba(0,0,0,0.2)', borderRadius: '16px', backdropFilter: 'blur(10px)', display: 'inline-block' }}>
                 <div style={{ fontSize: '0.8rem', opacity: 0.8, marginBottom: '0.25rem' }}>Sen de testini çöz:</div>
-                <div style={{ fontWeight: 600, letterSpacing: '0.05em' }}>cv-studyo-app.web.app</div>
+                <div style={{ fontWeight: 600, letterSpacing: '0.05em' }}>cvstudyo.com.tr</div>
               </div>
             </div>
           </div>
