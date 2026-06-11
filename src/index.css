@@ -25,6 +25,12 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
 }
 
+.app-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
 .btn-primary {
   background: var(--primary-color);
   color: white;
@@ -240,6 +246,11 @@ h1, h2, h3, h4, h5, h6 {
   body * {
     visibility: hidden;
   }
+  .app-container {
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+  }
   .cv-container, .cv-container * {
     visibility: visible;
   }
@@ -270,5 +281,12 @@ h1, h2, h3, h4, h5, h6 {
     border: none !important;
     padding: 2rem !important;
     margin: 0 !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .app-container {
+    flex-direction: column;
+    overflow: auto;
   }
 }
