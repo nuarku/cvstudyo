@@ -184,9 +184,7 @@ export const EnglishTestPage = () => {
               <div style={{ textAlign: 'left' }}>
                 <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.25rem' }}>Tarih</div>
                 <div style={{ fontWeight: 600, color: '#475569' }}>{new Date(result.date).toLocaleDateString('tr-TR')}</div>
-                <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '1rem', maxWidth: '300px' }}>
-                  * Bu sonuç tahmini bir değerlendirmedir. Resmi kurumlarda geçerliliği yoktur.
-                </div>
+
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ background: 'white', padding: '0.5rem', border: '1px solid #e2e8f0', borderRadius: '8px', display: 'inline-block' }}>
