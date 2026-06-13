@@ -129,28 +129,34 @@ export const EnglishTestPage = () => {
     if (!element || !wrapper) return;
     
     try {
-      // Temporarily remove transform on the wrapper so html-to-image calculates correct coordinates
+      // Temporarily remove transform on the wrapper
       const originalTransform = wrapper.style.transform;
       wrapper.style.transform = 'none';
       
       // Wait for the browser to recalculate layout
       await new Promise(resolve => setTimeout(resolve, 100));
       
-      // Temporarily remove shadow and border for a clean capture
-      const originalBoxShadow = element.style.boxShadow;
-      const originalBorder = element.style.border;
-      element.style.boxShadow = 'none';
-      element.style.border = 'none';
-      
+      // We want exact A4 Landscape: 297mm x 210mm
+      // At 96 DPI, this is 1122px x 793px.
+      // Our element is 800px x 565px. We scale it by 1122 / 800 = 1.4025
       const dataUrl = await toJpeg(element, {
-        quality: 0.98,
-        pixelRatio: 2,
-        backgroundColor: '#ffffff'
+        quality: 1.0,
+        pixelRatio: 2, // High-res export
+        canvasWidth: 1122,
+        canvasHeight: 793,
+        backgroundColor: '#ffffff',
+        style: {
+          transform: 'scale(1.4025)',
+          transformOrigin: 'top left',
+          width: '800px',
+          height: '565px',
+          margin: '0',
+          boxShadow: 'none',
+          border: 'none',
+        }
       });
       
       // Restore styles immediately
-      element.style.boxShadow = originalBoxShadow;
-      element.style.border = originalBorder;
       wrapper.style.transform = originalTransform;
       
       const link = document.createElement('a');
@@ -160,7 +166,6 @@ export const EnglishTestPage = () => {
     } catch (err) {
       console.error('Image generation error:', err);
       alert('Görsel oluşturulurken bir hata oluştu: ' + (err.message || 'Bilinmeyen hata'));
-      // Ensure transform is restored even on error
       if (wrapper && wrapper.style) {
         wrapper.style.transform = `scale(${scale})`;
       }
@@ -230,7 +235,7 @@ export const EnglishTestPage = () => {
                   borderRadius: '16px', 
                   padding: '2rem', 
                   width: '800px', 
-                  minHeight: '565px', 
+                  height: '565px', 
                   boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)', 
                   position: 'relative', 
                   boxSizing: 'border-box'
@@ -241,33 +246,33 @@ export const EnglishTestPage = () => {
                 
                 <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
                   <img src="/logo.png" alt="CV Stüdyo" style={{ height: '40px', marginBottom: '1rem' }} />
-                  <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.025em', textTransform: 'uppercase' }}>SEVİYE TESPİT BELGESİ</h1>
+                  <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.025em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>SEVİYE TESPİT BELGESİ</h1>
                   <p style={{ color: '#64748b', fontSize: '1.1rem', marginTop: '0.5rem' }}>İngilizce Seviye Tespiti</p>
                 </div>
 
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                   <p style={{ color: '#475569', fontSize: '1.1rem', marginBottom: '0.5rem' }}>Bu sertifika,</p>
-                  <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#1e293b', borderBottom: '2px solid #e2e8f0', display: 'inline-block', paddingBottom: '0.5rem', marginBottom: '1rem' }}>
+                  <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#1e293b', borderBottom: '2px solid #e2e8f0', display: 'inline-block', paddingBottom: '0.5rem', marginBottom: '1rem', whiteSpace: 'nowrap' }}>
                     {(cvData?.personalInfo?.fullName || currentUser?.email?.split('@')[0] || 'KULLANICI').toUpperCase()}
                   </h2>
-                  <p style={{ color: '#475569', fontSize: '1.1rem', maxWidth: '500px', margin: '0.5rem auto' }}>
+                  <p style={{ color: '#475569', fontSize: '1.1rem', maxWidth: '550px', margin: '0.5rem auto' }}>
                     tarafından tamamlanan İngilizce değerlendirme sınavı sonucunda aşağıdaki tahmini seviyeye ulaştığını gösterir.
                   </p>
                   
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginTop: '2rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginTop: '2.5rem' }}>
                     <div>
                       <div style={{ fontSize: '0.9rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Seviye</div>
-                      <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563eb' }}>{result.level}</div>
+                      <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563eb', whiteSpace: 'nowrap' }}>{result.level}</div>
                     </div>
                     <div style={{ width: '1px', background: '#e2e8f0' }}></div>
                     <div>
                       <div style={{ fontSize: '0.9rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Skor</div>
-                      <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563eb' }}>{result.score}/100</div>
+                      <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563eb', whiteSpace: 'nowrap' }}>{result.score}/100</div>
                     </div>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid #f1f5f9', paddingTop: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid #f1f5f9', paddingTop: '1.5rem', marginTop: 'auto' }}>
                   <div style={{ textAlign: 'left' }}>
                     <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.25rem' }}>Tarih</div>
                     <div style={{ fontWeight: 600, color: '#475569' }}>{new Date(result.date).toLocaleDateString('tr-TR')}</div>
