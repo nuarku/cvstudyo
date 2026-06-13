@@ -128,23 +128,30 @@ export const EnglishTestPage = () => {
     if (!element) return;
     
     try {
-      // Temporarily remove shadow and border for a clean capture
-      const originalBoxShadow = element.style.boxShadow;
-      const originalBorder = element.style.border;
-      element.style.boxShadow = 'none';
-      element.style.border = 'none';
+      // Clone the element to avoid transform/scale issues with html-to-image
+      const clone = element.cloneNode(true);
+      clone.style.position = 'absolute';
+      clone.style.top = '0';
+      clone.style.left = '0';
+      clone.style.zIndex = '-9999'; // Hide behind the page
+      clone.style.transform = 'none';
+      clone.style.boxShadow = 'none';
+      clone.style.border = 'none';
+      clone.style.margin = '0';
+      clone.style.width = '800px';
+      clone.style.height = 'auto';
+      clone.style.minHeight = '565px';
+      clone.style.overflow = 'visible';
       
-      const dataUrl = await toJpeg(element, {
+      document.body.appendChild(clone);
+      
+      const dataUrl = await toJpeg(clone, {
         quality: 0.98,
         pixelRatio: 2,
-        backgroundColor: '#ffffff',
-        style: {
-          transform: 'none',
-        }
+        backgroundColor: '#ffffff'
       });
       
-      element.style.boxShadow = originalBoxShadow;
-      element.style.border = originalBorder;
+      document.body.removeChild(clone);
       
       const link = document.createElement('a');
       link.download = 'Ingilizce-Sertifikasi.jpg';
@@ -152,6 +159,7 @@ export const EnglishTestPage = () => {
       link.click();
     } catch (err) {
       console.error('Image generation error:', err);
+      alert('Görsel oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.');
     }
   };
 
@@ -201,12 +209,10 @@ export const EnglishTestPage = () => {
             justifyContent: 'center', 
             overflow: 'hidden' 
           }}>
-            <div style={{
+            <div id="certificate-wrapper" style={{
               transform: `scale(${scale})`,
               transformOrigin: 'top center',
               width: '800px',
-              height: '565px',
-              marginBottom: `-${565 * (1 - scale)}px`, // Fix container height after scale
               display: 'flex',
               justifyContent: 'center'
             }}>
@@ -218,34 +224,33 @@ export const EnglishTestPage = () => {
                   background: 'white', 
                   border: '1px solid #e2e8f0', 
                   borderRadius: '16px', 
-                  padding: '3rem', 
+                  padding: '2rem', 
                   width: '800px', 
-                  height: '565px', 
+                  minHeight: '565px', 
                   boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)', 
                   position: 'relative', 
-                  overflow: 'hidden',
                   boxSizing: 'border-box'
                 }}
               >
                 {/* Certificate Background Pattern */}
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '10px', background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899)' }}></div>
                 
-                <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                  <img src="/logo.png" alt="CV Stüdyo" style={{ height: '40px', marginBottom: '1.5rem' }} />
+                <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+                  <img src="/logo.png" alt="CV Stüdyo" style={{ height: '40px', marginBottom: '1rem' }} />
                   <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.025em', textTransform: 'uppercase' }}>SEVİYE TESPİT BELGESİ</h1>
                   <p style={{ color: '#64748b', fontSize: '1.1rem', marginTop: '0.5rem' }}>İngilizce Seviye Tespiti</p>
                 </div>
 
-                <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-                  <p style={{ color: '#475569', fontSize: '1.1rem', marginBottom: '1rem' }}>Bu sertifika,</p>
+                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                  <p style={{ color: '#475569', fontSize: '1.1rem', marginBottom: '0.5rem' }}>Bu sertifika,</p>
                   <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#1e293b', borderBottom: '2px solid #e2e8f0', display: 'inline-block', paddingBottom: '0.5rem', marginBottom: '1rem' }}>
                     {(cvData?.personalInfo?.fullName || currentUser?.email?.split('@')[0] || 'KULLANICI').toUpperCase()}
                   </h2>
-                  <p style={{ color: '#475569', fontSize: '1.1rem', maxWidth: '500px', margin: '1rem auto' }}>
+                  <p style={{ color: '#475569', fontSize: '1.1rem', maxWidth: '500px', margin: '0.5rem auto' }}>
                     tarafından tamamlanan İngilizce değerlendirme sınavı sonucunda aşağıdaki tahmini seviyeye ulaştığını gösterir.
                   </p>
                   
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginTop: '3rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginTop: '2rem' }}>
                     <div>
                       <div style={{ fontSize: '0.9rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Seviye</div>
                       <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563eb' }}>{result.level}</div>
