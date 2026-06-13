@@ -136,27 +136,23 @@ export const EnglishTestPage = () => {
       // Wait for the browser to recalculate layout
       await new Promise(resolve => setTimeout(resolve, 100));
       
-      // We want exact A4 Landscape: 297mm x 210mm
-      // At 96 DPI, this is 1122px x 793px.
-      // Our element is 800px x 565px. We scale it by 1122 / 800 = 1.4025
+      // Temporarily remove shadow and border for a clean capture
+      const originalBoxShadow = element.style.boxShadow;
+      const originalBorder = element.style.border;
+      element.style.boxShadow = 'none';
+      element.style.border = 'none';
+      
+      // Simple and robust capture. No artificial canvas sizing, just the pure element.
+      // Since element is forced to 800x565 with flexShrink: 0, it will always be perfectly landscape.
       const dataUrl = await toJpeg(element, {
         quality: 1.0,
-        pixelRatio: 2, // High-res export
-        canvasWidth: 1122,
-        canvasHeight: 793,
-        backgroundColor: '#ffffff',
-        style: {
-          transform: 'scale(1.4025)',
-          transformOrigin: 'top left',
-          width: '800px',
-          height: '565px',
-          margin: '0',
-          boxShadow: 'none',
-          border: 'none',
-        }
+        pixelRatio: 2, // Generates 1600x1130 high-res image
+        backgroundColor: '#ffffff'
       });
       
       // Restore styles immediately
+      element.style.boxShadow = originalBoxShadow;
+      element.style.border = originalBorder;
       wrapper.style.transform = originalTransform;
       
       const link = document.createElement('a');
@@ -222,6 +218,7 @@ export const EnglishTestPage = () => {
               transform: `scale(${scale})`,
               transformOrigin: 'top center',
               width: '800px',
+              flexShrink: 0,
               display: 'flex',
               justifyContent: 'center'
             }}>
@@ -236,6 +233,7 @@ export const EnglishTestPage = () => {
                   padding: '2rem', 
                   width: '800px', 
                   height: '565px', 
+                  flexShrink: 0,
                   boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)', 
                   position: 'relative', 
                   boxSizing: 'border-box'
