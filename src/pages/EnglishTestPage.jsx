@@ -107,60 +107,51 @@ export const EnglishTestPage = () => {
     setShowHistory(false);
   };
 
-  const handlePrint = async () => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    
-    if (isMobile) {
-      const element = document.querySelector('.certificate-container');
-      if (!element) return;
-      
-      const clone = element.cloneNode(true);
-      document.body.appendChild(clone);
-      
-      // Place clone at top-left but completely behind the page so it's invisible to the user
-      clone.style.position = 'absolute';
-      clone.style.top = '0';
-      clone.style.left = '0';
-      clone.style.zIndex = '-9999';
-      
-      // Force exact A4 dimensions in pixels at 96 DPI (297mm x 210mm)
-      clone.style.width = '1122px';
-      clone.style.height = '793px';
-      clone.style.maxWidth = 'none';
-      clone.style.maxHeight = 'none';
-      clone.style.margin = '0';
-      clone.style.boxShadow = 'none';
-      clone.style.transform = 'none';
-      clone.style.overflow = 'hidden';
-      
-      try {
-        const dataUrl = await toJpeg(clone, {
-          quality: 0.98,
-          pixelRatio: 2,
-          canvasWidth: 1122,
-          canvasHeight: 793,
-          backgroundColor: '#ffffff',
-          style: {
-            transform: 'none',
-          }
-        });
-        
-        const pdf = new jsPDF({
-          orientation: 'landscape',
-          unit: 'mm',
-          format: 'a4'
-        });
-        
-        // Force the image to exactly fill the 297x210mm A4 landscape page
-        pdf.addImage(dataUrl, 'JPEG', 0, 0, 297, 210);
-        pdf.save('Ingilizce-Sertifikasi.pdf');
-      } catch (err) {
-        console.error('PDF error:', err);
-      } finally {
-        document.body.removeChild(clone);
+  // Calculate scale for mobile viewing
+  const [scale, setScale] = useState(1);
+  useEffect(() => {
+    const updateScale = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth < 850) {
+        setScale((screenWidth - 40) / 800);
+      } else {
+        setScale(1);
       }
-    } else {
-      window.print();
+    };
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
+
+  const handlePrint = async () => {
+    const element = document.getElementById('english-certificate');
+    if (!element) return;
+    
+    try {
+      // Temporarily remove shadow and border for a clean capture
+      const originalBoxShadow = element.style.boxShadow;
+      const originalBorder = element.style.border;
+      element.style.boxShadow = 'none';
+      element.style.border = 'none';
+      
+      const dataUrl = await toJpeg(element, {
+        quality: 0.98,
+        pixelRatio: 2,
+        backgroundColor: '#ffffff',
+        style: {
+          transform: 'none',
+        }
+      });
+      
+      element.style.boxShadow = originalBoxShadow;
+      element.style.border = originalBorder;
+      
+      const link = document.createElement('a');
+      link.download = 'Ingilizce-Sertifikasi.jpg';
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error('Image generation error:', err);
     }
   };
 
@@ -186,10 +177,10 @@ export const EnglishTestPage = () => {
       <div style={{ minHeight: '100vh', background: '#f8fafc', display: 'flex', flexDirection: 'column' }}>
         <TestHeader />
 
-        <div style={{ padding: '3rem 2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
+        <div style={{ padding: '3rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, width: '100%', overflowX: 'hidden' }}>
           
           {showHistory && (
-            <div className="hide-on-print" style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '12px', padding: '1rem 2rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: '800px' }}>
+            <div className="hide-on-print" style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '12px', padding: '1rem 2rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '90%', maxWidth: '800px' }}>
               <div>
                 <h3 style={{ margin: '0 0 0.25rem 0', color: '#1e3a8a', fontSize: '1.1rem' }}>Önceki Test Sonucunuz</h3>
                 <p style={{ margin: 0, color: '#3b82f6', fontSize: '0.9rem' }}>Bu testi daha önce {new Date(result.date).toLocaleDateString('tr-TR')} tarihinde çözdünüz.</p>
@@ -204,49 +195,79 @@ export const EnglishTestPage = () => {
             </div>
           )}
 
-          {/* Certificate Container */}
-          <div className="certificate-container" style={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '3rem', maxWidth: '800px', width: '100%', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)', position: 'relative', overflow: 'hidden' }}>
-            
-            {/* Certificate Background Pattern */}
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '10px', background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899)' }}></div>
-            
-            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-              <img src="/logo.png" alt="CV Stüdyo" style={{ height: '40px', marginBottom: '1.5rem' }} />
-              <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.025em', textTransform: 'uppercase' }}>SEVİYE TESPİT BELGESİ</h1>
-              <p style={{ color: '#64748b', fontSize: '1.1rem', marginTop: '0.5rem' }}>İngilizce Seviye Tespiti</p>
-            </div>
-
-            <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-              <p style={{ color: '#475569', fontSize: '1.1rem', marginBottom: '1rem' }}>Bu sertifika,</p>
-              <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#1e293b', borderBottom: '2px solid #e2e8f0', display: 'inline-block', paddingBottom: '0.5rem', marginBottom: '1rem' }}>
-                {(cvData?.personalInfo?.fullName || currentUser?.email?.split('@')[0] || 'KULLANICI').toUpperCase()}
-              </h2>
-              <p style={{ color: '#475569', fontSize: '1.1rem', maxWidth: '500px', margin: '1rem auto' }}>
-                tarafından tamamlanan İngilizce değerlendirme sınavı sonucunda aşağıdaki tahmini seviyeye ulaştığını gösterir.
-              </p>
-              
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginTop: '3rem' }}>
-                <div>
-                  <div style={{ fontSize: '0.9rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Seviye</div>
-                  <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563eb' }}>{result.level}</div>
+          <div style={{ 
+            width: '100%', 
+            display: 'flex', 
+            justifyContent: 'center', 
+            overflow: 'hidden' 
+          }}>
+            <div style={{
+              transform: `scale(${scale})`,
+              transformOrigin: 'top center',
+              width: '800px',
+              height: '565px',
+              marginBottom: `-${565 * (1 - scale)}px`, // Fix container height after scale
+              display: 'flex',
+              justifyContent: 'center'
+            }}>
+              {/* Certificate Container */}
+              <div 
+                id="english-certificate"
+                className="certificate-container" 
+                style={{ 
+                  background: 'white', 
+                  border: '1px solid #e2e8f0', 
+                  borderRadius: '16px', 
+                  padding: '3rem', 
+                  width: '800px', 
+                  height: '565px', 
+                  boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)', 
+                  position: 'relative', 
+                  overflow: 'hidden',
+                  boxSizing: 'border-box'
+                }}
+              >
+                {/* Certificate Background Pattern */}
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '10px', background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899)' }}></div>
+                
+                <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                  <img src="/logo.png" alt="CV Stüdyo" style={{ height: '40px', marginBottom: '1.5rem' }} />
+                  <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.025em', textTransform: 'uppercase' }}>SEVİYE TESPİT BELGESİ</h1>
+                  <p style={{ color: '#64748b', fontSize: '1.1rem', marginTop: '0.5rem' }}>İngilizce Seviye Tespiti</p>
                 </div>
-                <div style={{ width: '1px', background: '#e2e8f0' }}></div>
-                <div>
-                  <div style={{ fontSize: '0.9rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Skor</div>
-                  <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563eb' }}>{result.score}/100</div>
+
+                <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+                  <p style={{ color: '#475569', fontSize: '1.1rem', marginBottom: '1rem' }}>Bu sertifika,</p>
+                  <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#1e293b', borderBottom: '2px solid #e2e8f0', display: 'inline-block', paddingBottom: '0.5rem', marginBottom: '1rem' }}>
+                    {(cvData?.personalInfo?.fullName || currentUser?.email?.split('@')[0] || 'KULLANICI').toUpperCase()}
+                  </h2>
+                  <p style={{ color: '#475569', fontSize: '1.1rem', maxWidth: '500px', margin: '1rem auto' }}>
+                    tarafından tamamlanan İngilizce değerlendirme sınavı sonucunda aşağıdaki tahmini seviyeye ulaştığını gösterir.
+                  </p>
+                  
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginTop: '3rem' }}>
+                    <div>
+                      <div style={{ fontSize: '0.9rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Seviye</div>
+                      <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563eb' }}>{result.level}</div>
+                    </div>
+                    <div style={{ width: '1px', background: '#e2e8f0' }}></div>
+                    <div>
+                      <div style={{ fontSize: '0.9rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Skor</div>
+                      <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563eb' }}>{result.score}/100</div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid #f1f5f9', paddingTop: '2rem' }}>
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.25rem' }}>Tarih</div>
-                <div style={{ fontWeight: 600, color: '#475569' }}>{new Date(result.date).toLocaleDateString('tr-TR')}</div>
-
-              </div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ background: 'white', padding: '0.5rem', border: '1px solid #e2e8f0', borderRadius: '8px', display: 'inline-block' }}>
-                  <QRCodeSVG value={verifyUrl} size={80} level="M" includeMargin={false} />
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid #f1f5f9', paddingTop: '1.5rem' }}>
+                  <div style={{ textAlign: 'left' }}>
+                    <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.25rem' }}>Tarih</div>
+                    <div style={{ fontWeight: 600, color: '#475569' }}>{new Date(result.date).toLocaleDateString('tr-TR')}</div>
+                  </div>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ background: 'white', padding: '0.5rem', border: '1px solid #e2e8f0', borderRadius: '8px', display: 'inline-block' }}>
+                      <QRCodeSVG value={verifyUrl} size={60} level="M" includeMargin={false} />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -258,7 +279,7 @@ export const EnglishTestPage = () => {
               className="btn-primary"
               style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
             >
-              <Download size={18} /> Belgeyi Kaydet / Yazdır
+              <Download size={18} /> Görseli İndir
             </button>
             
             {!showHistory && (
