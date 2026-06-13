@@ -4,7 +4,7 @@ import { useCV } from '../context/CVContext';
 import { useAuth } from '../context/AuthContext';
 import { ArrowLeft, BookOpen, Download, RotateCcw, CheckCircle } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
-import html2pdf from 'html2pdf.js';
+import { toJpeg } from 'html-to-image';
 
 // 20 Questions - CEFR Aligned (A1 to C1/C2)
 const questions = [
