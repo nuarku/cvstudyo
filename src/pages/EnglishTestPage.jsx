@@ -125,33 +125,33 @@ export const EnglishTestPage = () => {
 
   const handlePrint = async () => {
     const element = document.getElementById('english-certificate');
-    if (!element) return;
+    const wrapper = document.getElementById('certificate-wrapper');
+    if (!element || !wrapper) return;
     
     try {
-      // Clone the element to avoid transform/scale issues with html-to-image
-      const clone = element.cloneNode(true);
-      clone.style.position = 'absolute';
-      clone.style.top = '0';
-      clone.style.left = '0';
-      clone.style.zIndex = '-9999'; // Hide behind the page
-      clone.style.transform = 'none';
-      clone.style.boxShadow = 'none';
-      clone.style.border = 'none';
-      clone.style.margin = '0';
-      clone.style.width = '800px';
-      clone.style.height = 'auto';
-      clone.style.minHeight = '565px';
-      clone.style.overflow = 'visible';
+      // Temporarily remove transform on the wrapper so html-to-image calculates correct coordinates
+      const originalTransform = wrapper.style.transform;
+      wrapper.style.transform = 'none';
       
-      document.body.appendChild(clone);
+      // Wait for the browser to recalculate layout
+      await new Promise(resolve => setTimeout(resolve, 100));
       
-      const dataUrl = await toJpeg(clone, {
+      // Temporarily remove shadow and border for a clean capture
+      const originalBoxShadow = element.style.boxShadow;
+      const originalBorder = element.style.border;
+      element.style.boxShadow = 'none';
+      element.style.border = 'none';
+      
+      const dataUrl = await toJpeg(element, {
         quality: 0.98,
         pixelRatio: 2,
         backgroundColor: '#ffffff'
       });
       
-      document.body.removeChild(clone);
+      // Restore styles immediately
+      element.style.boxShadow = originalBoxShadow;
+      element.style.border = originalBorder;
+      wrapper.style.transform = originalTransform;
       
       const link = document.createElement('a');
       link.download = 'Ingilizce-Sertifikasi.jpg';
@@ -159,7 +159,11 @@ export const EnglishTestPage = () => {
       link.click();
     } catch (err) {
       console.error('Image generation error:', err);
-      alert('Görsel oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.');
+      alert('Görsel oluşturulurken bir hata oluştu: ' + (err.message || 'Bilinmeyen hata'));
+      // Ensure transform is restored even on error
+      if (wrapper && wrapper.style) {
+        wrapper.style.transform = `scale(${scale})`;
+      }
     }
   };
 
