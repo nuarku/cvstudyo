@@ -7,6 +7,7 @@ import { HomePage } from './pages/HomePage';
 import { EditorPage } from './pages/EditorPage';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { KvkkPage } from './pages/KvkkPage';
+import { TermsPage } from './pages/TermsPage';
 import { AdminPage } from './pages/AdminPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { EnglishTestPage } from './pages/EnglishTestPage';
@@ -53,6 +54,7 @@ const App = () => {
             />
             <Route path="/gizlilik" element={<PrivacyPage />} />
             <Route path="/kvkk" element={<KvkkPage />} />
+            <Route path="/terms" element={<TermsPage />} />
             <Route path="/verify/certificate" element={<VerifyCertificatePage />} />
             <Route 
               path="/dashboard" 

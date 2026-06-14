@@ -1,11 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Zap, Layout, FileText, ArrowRight, CheckCircle2, Brain, BookOpen } from 'lucide-react';
 import { PublicNavbar } from '../components/Layout/PublicNavbar';
 import { PublicFooter } from '../components/Layout/PublicFooter';
 
 export const HomePage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#f8fafc' }}>
@@ -21,16 +23,16 @@ export const HomePage = () => {
         <section style={{ padding: '7rem 2rem', textAlign: 'center', maxWidth: '800px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <div className="animate-fade-in-up" style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
             <div className="pulse-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#dcfce7', color: '#15803d', padding: '0.5rem 1rem', borderRadius: '9999px', fontSize: '0.875rem', fontWeight: 700, border: '1px solid #bbf7d0' }}>
-              Tamamen Ücretsiz
+              {t('home.free_badge')}
             </div>
           </div>
           
           <h1 className="animate-fade-in-up delay-100" style={{ fontSize: '4.5rem', fontWeight: '800', color: '#0f172a', lineHeight: 1.1, marginBottom: '1.5rem', letterSpacing: '-0.05em' }}>
-            Kariyerinize <span className="animated-gradient-text">Güçlü</span> Bir Başlangıç Yapın
+            {t('home.hero_title_1')} <span className="animated-gradient-text">{t('home.hero_title_strong')}</span> {t('home.hero_title_2')}
           </h1>
           
           <p className="animate-fade-in-up delay-200" style={{ fontSize: '1.3rem', color: '#475569', marginBottom: '3.5rem', lineHeight: 1.6, maxWidth: '650px', margin: '0 auto 3.5rem auto' }}>
-            Göz alıcı şablonlar, canlı önizleme ve anında PDF indirme özellikleriyle modern bir CV oluşturmak artık çok kolay.
+            {t('home.hero_subtitle')}
           </p>
           
           <div className="animate-fade-in-up delay-300">
@@ -38,14 +40,14 @@ export const HomePage = () => {
               className="hero-btn"
               onClick={() => navigate('/auth', { state: { isLogin: false } })}
             >
-              Hemen Ücretsiz CV Oluştur <ArrowRight size={20} />
+              {t('home.create_cv_btn')} <ArrowRight size={20} />
             </button>
           </div>
 
           <div className="animate-fade-in-up delay-400" style={{ marginTop: '3rem', display: 'flex', justifyContent: 'center', gap: '2.5rem', color: '#64748b', fontSize: '1rem', fontWeight: 500, flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle2 size={18} color="#22c55e" /> Üyelik Ücretsiz</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle2 size={18} color="#22c55e" /> Sınırsız İndirme</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle2 size={18} color="#22c55e" /> 5+ Modern Tema</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle2 size={18} color="#22c55e" /> {t('home.feature_1')}</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle2 size={18} color="#22c55e" /> {t('home.feature_2')}</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle2 size={18} color="#22c55e" /> {t('home.feature_3')}</div>
           </div>
         </section>
 
@@ -53,8 +55,8 @@ export const HomePage = () => {
         <section style={{ background: 'white', padding: '5rem 2rem', position: 'relative', zIndex: 1 }}>
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-              <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#0f172a', marginBottom: '1rem' }}>Neden CV Stüdyo?</h2>
-              <p style={{ color: '#64748b', fontSize: '1.1rem' }}>İşverenlerin dikkatini çekecek, modern ve profesyonel bir görünüm için ihtiyacınız olan her şey.</p>
+              <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#0f172a', marginBottom: '1rem' }}>{t('home.why_us')}</h2>
+              <p style={{ color: '#64748b', fontSize: '1.1rem' }}>{t('home.why_subtitle')}</p>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2.5rem' }}>
@@ -62,24 +64,24 @@ export const HomePage = () => {
                 <div style={{ width: 48, height: 48, background: '#dbeafe', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
                   <Zap size={24} color="#2563eb" />
                 </div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>Hızlı ve Kolay</h3>
-                <p style={{ color: '#475569', lineHeight: 1.6, margin: 0 }}>Karmaşık programlarla uğraşmayın. Bilgilerinizi formlara girin, gerisini sistemimize bırakın. Her şey otomatik.</p>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>{t('home.why_feature1_title')}</h3>
+                <p style={{ color: '#475569', lineHeight: 1.6, margin: 0 }}>{t('home.why_feature1_desc')}</p>
               </div>
 
               <div className="feature-card" style={{ padding: '2.5rem', background: '#f8fafc', borderRadius: '24px', border: '1px solid #f1f5f9' }}>
                 <div style={{ width: 48, height: 48, background: '#f3e8ff', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
                   <Layout size={24} color="#9333ea" />
                 </div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>Modern Temalar</h3>
-                <p style={{ color: '#475569', lineHeight: 1.6, margin: 0 }}>Klasik, Yaratıcı, Minimalist... Sektörünüze en uygun tasarımı tek tıklamayla seçin. Renkleri dilediğiniz gibi özelleştirin.</p>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>{t('home.why_feature2_title')}</h3>
+                <p style={{ color: '#475569', lineHeight: 1.6, margin: 0 }}>{t('home.why_feature2_desc')}</p>
               </div>
 
               <div className="feature-card" style={{ padding: '2.5rem', background: '#f8fafc', borderRadius: '24px', border: '1px solid #f1f5f9' }}>
                 <div style={{ width: 48, height: 48, background: '#d1fae5', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
                   <FileText size={24} color="#059669" />
                 </div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>Sınırsız PDF Çıktısı</h3>
-                <p style={{ color: '#475569', lineHeight: 1.6, margin: 0 }}>Canlı önizleme ile CV'nizin son halini her an görün. Memnun kaldığınızda yüksek kaliteli PDF formatında anında indirin.</p>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', marginBottom: '1rem' }}>{t('home.why_feature3_title')}</h3>
+                <p style={{ color: '#475569', lineHeight: 1.6, margin: 0 }}>{t('home.why_feature3_desc')}</p>
               </div>
             </div>
           </div>
@@ -90,19 +92,19 @@ export const HomePage = () => {
           <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2.5rem', textAlign: 'center' }}>
             <div className="stat-card">
               <div style={{ fontSize: '3rem', fontWeight: '800', color: '#2563eb', marginBottom: '0.5rem', lineHeight: 1 }}>5+</div>
-              <div style={{ color: '#64748b', fontWeight: 600, fontSize: '1.1rem' }}>Profesyonel Tema</div>
+              <div style={{ color: '#64748b', fontWeight: 600, fontSize: '1.1rem' }}>{t('home.stat1')}</div>
             </div>
             <div className="stat-card">
               <div style={{ fontSize: '3rem', fontWeight: '800', color: '#9333ea', marginBottom: '0.5rem', lineHeight: 1 }}>%100</div>
-              <div style={{ color: '#64748b', fontWeight: 600, fontSize: '1.1rem' }}>Ücretsiz Kullanım</div>
+              <div style={{ color: '#64748b', fontWeight: 600, fontSize: '1.1rem' }}>{t('home.stat2')}</div>
             </div>
             <div className="stat-card">
               <div style={{ fontSize: '3rem', fontWeight: '800', color: '#059669', marginBottom: '0.5rem', lineHeight: 1 }}>Aa</div>
-              <div style={{ color: '#64748b', fontWeight: 600, fontSize: '1.1rem' }}>Zengin Yazı Tipleri</div>
+              <div style={{ color: '#64748b', fontWeight: 600, fontSize: '1.1rem' }}>{t('home.stat3')}</div>
             </div>
             <div className="stat-card">
               <div style={{ fontSize: '3rem', fontWeight: '800', color: '#ea580c', marginBottom: '0.5rem', lineHeight: 1 }}>PDF</div>
-              <div style={{ color: '#64748b', fontWeight: 600, fontSize: '1.1rem' }}>Anında PDF Çıktısı</div>
+              <div style={{ color: '#64748b', fontWeight: 600, fontSize: '1.1rem' }}>{t('home.stat4')}</div>
             </div>
           </div>
         </section>
@@ -112,13 +114,13 @@ export const HomePage = () => {
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#e0e7ff', color: '#4338ca', padding: '0.5rem 1rem', borderRadius: '9999px', fontSize: '0.875rem', fontWeight: 700, marginBottom: '1rem' }}>
-                Kendini Geliştir
+                {t('home.tests_highlight_tag')}
               </div>
               <h2 style={{ fontSize: '3rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem', letterSpacing: '-0.025em' }}>
-                Kendinizi Test Edin
+                {t('home.tests_highlight_title')}
               </h2>
               <p style={{ fontSize: '1.2rem', color: '#475569', maxWidth: '600px', margin: '0 auto', lineHeight: 1.6 }}>
-                Sadece CV oluşturmakla kalmayın, seviyenizi ölçüp profilinize değer katın. Testleri çözün, sertifikanızı alın ve becerilerinizi kanıtlayın.
+                {t('home.tests_highlight_desc')}
               </p>
             </div>
 
@@ -127,12 +129,12 @@ export const HomePage = () => {
                 <div className="icon-wrapper english-icon">
                   <BookOpen size={36} />
                 </div>
-                <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem', letterSpacing: '-0.025em' }}>İngilizce Seviye Tespiti</h3>
+                <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem', letterSpacing: '-0.025em' }}>{t('home.test_english_title')}</h3>
                 <p style={{ color: '#475569', marginBottom: '2.5rem', lineHeight: 1.6, fontSize: '1.1rem' }}>
-                  A1'den C1'e uzanan kapsamlı sorularla İngilizce gramer ve kelime bilginizi test edin. Seviye tespit belgenizi hemen alın!
+                  {t('home.test_english_desc')}
                 </p>
                 <button onClick={() => navigate('/test/english')} className="test-btn english">
-                  Teste Başla <ArrowRight size={20} />
+                  {t('home.start_test_btn')} <ArrowRight size={20} />
                 </button>
               </div>
 
@@ -140,12 +142,12 @@ export const HomePage = () => {
                 <div className="icon-wrapper career-icon">
                   <Brain size={36} />
                 </div>
-                <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem', letterSpacing: '-0.025em' }}>Kariyer Yönelim Testi</h3>
+                <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem', letterSpacing: '-0.025em' }}>{t('home.test_career_title')}</h3>
                 <p style={{ color: '#475569', marginBottom: '2.5rem', lineHeight: 1.6, fontSize: '1.1rem' }}>
-                  Gerçek iş hayatı senaryolarına dayalı analizlerle hangi çalışma tarzına ve profile uygun olduğunuzu yapay zeka ile keşfedin.
+                  {t('home.test_career_desc')}
                 </p>
                 <button onClick={() => navigate('/test/career')} className="test-btn career">
-                  Teste Başla <ArrowRight size={20} />
+                  {t('home.start_test_btn')} <ArrowRight size={20} />
                 </button>
               </div>
             </div>

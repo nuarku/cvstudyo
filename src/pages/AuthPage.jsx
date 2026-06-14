@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { Lock, Mail, FileText, Layout, Zap, X, Eye, EyeOff } from 'lucide-react';
 
@@ -16,6 +17,7 @@ export const AuthPage = () => {
   const [modalContent, setModalContent] = useState(null); // 'privacy', 'kvkk', or null
   const { login, signup } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -169,10 +171,10 @@ export const AuthPage = () => {
                 <img src="/logo.png" alt="CV Stüdyo Logo" onClick={() => navigate('/')} style={{ height: '40px', cursor: 'pointer' }} />
               </div>
               <h2 style={{ fontSize: '2rem', fontWeight: '800', margin: '0 0 0.5rem 0', color: '#0f172a' }}>
-                {isLogin ? 'Hoş Geldin' : 'Aramıza Katıl'}
+                {isLogin ? t('auth.welcome_back') : t('auth.join_us')}
               </h2>
               <p style={{ color: '#64748b', margin: 0, fontSize: '0.95rem' }}>
-                {isLogin ? 'Kaldığın yerden devam etmek için giriş yap.' : 'Hemen ücretsiz bir hesap oluştur.'}
+                {isLogin ? t('auth.login_subtitle') : t('auth.signup_subtitle')}
               </p>
             </div>
 
@@ -184,7 +186,7 @@ export const AuthPage = () => {
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#475569', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>E-posta Adresi</label>
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#475569', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('auth.email_label')}</label>
                 <div style={{ position: 'relative' }}>
                   <div style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', display: 'flex', alignItems: 'center' }}>
                     <Mail size={18} />
@@ -201,7 +203,7 @@ export const AuthPage = () => {
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#475569', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Şifre</label>
+                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#475569', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('auth.password_label')}</label>
                 <div style={{ position: 'relative' }}>
                   <div style={{ position: 'absolute', left: '1.25rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', display: 'flex', alignItems: 'center' }}>
                     <Lock size={18} />
@@ -261,17 +263,17 @@ export const AuthPage = () => {
                   background: '#2563eb', color: 'white', padding: '1rem', borderRadius: '9999px', border: 'none', fontWeight: 600, fontSize: '1rem', cursor: loading ? 'not-allowed' : 'pointer', marginTop: isLogin ? '1rem' : '0.5rem', transition: 'all 0.2s', opacity: loading ? 0.7 : 1, boxShadow: '0 4px 6px -1px rgba(37, 99, 235, 0.2)'
                 }}
               >
-                {isLogin ? 'Giriş Yap' : 'Kayıt Ol'}
+                {isLogin ? t('auth.login_btn') : t('auth.signup_btn')}
               </button>
             </form>
 
             <div style={{ textAlign: 'center', marginTop: '2.5rem', fontSize: '0.9rem', color: '#64748b' }}>
-              {isLogin ? "Hesabın yok mu? " : "Zaten hesabın var mı? "}
+              {isLogin ? t('auth.no_account') : t('auth.has_account')}
               <button 
                 onClick={() => { setIsLogin(!isLogin); setError(''); }}
                 style={{ background: 'none', border: 'none', color: '#2563eb', fontWeight: 600, cursor: 'pointer', padding: 0 }}
               >
-                {isLogin ? 'Hemen Kayıt Ol' : 'Giriş Yap'}
+                {isLogin ? t('auth.signup_btn') : t('auth.login_btn')}
               </button>
             </div>
           </div>
