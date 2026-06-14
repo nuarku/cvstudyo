@@ -76,12 +76,12 @@ export const CreativeTemplate = ({ data }) => {
             İLETİŞİM
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.9rem', color: '#f8fafc' }}>
-            {personalInfo.email && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span>✉</span> {personalInfo.email}</div>}
-            {personalInfo.phone && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span>☎</span> {personalInfo.phone}</div>}
-            {personalInfo.location && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span>⌂</span> {personalInfo.location}</div>}
-            {personalInfo.website && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span>🌐</span> {personalInfo.website}</div>}
-            {personalInfo.birthDate && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span>🎂</span> {personalInfo.birthDate}</div>}
-            {personalInfo.tcKimlik && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><span>🆔</span> TCKN: {personalInfo.tcKimlik}</div>}
+            {personalInfo.email && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>{personalInfo.email}</div>}
+            {personalInfo.phone && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>{personalInfo.phone}</div>}
+            {personalInfo.location && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>{personalInfo.location}</div>}
+            {personalInfo.website && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>{personalInfo.website}</div>}
+            {personalInfo.birthDate && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>{personalInfo.birthDate}</div>}
+            {personalInfo.tcKimlik && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>TCKN: {personalInfo.tcKimlik}</div>}
           </div>
         </div>
 
