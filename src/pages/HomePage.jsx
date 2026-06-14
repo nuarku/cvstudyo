@@ -129,7 +129,7 @@ export const HomePage = () => {
                 </div>
                 <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem', letterSpacing: '-0.025em' }}>İngilizce Seviye Tespiti</h3>
                 <p style={{ color: '#475569', marginBottom: '2.5rem', lineHeight: 1.6, fontSize: '1.1rem' }}>
-                  A1'den C1'e uzanan kapsamlı sorularla İngilizce gramer ve kelime bilginizi test edin. Resmi görünümlü sertifikanızı hemen alın!
+                  A1'den C1'e uzanan kapsamlı sorularla İngilizce gramer ve kelime bilginizi test edin. Seviye tespit belgenizi hemen alın!
                 </p>
                 <button onClick={() => navigate('/test/english')} className="test-btn english">
                   Teste Başla <ArrowRight size={20} />
