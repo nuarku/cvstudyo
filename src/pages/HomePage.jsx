@@ -12,38 +12,45 @@ export const HomePage = () => {
       <PublicNavbar />
 
       {/* Hero Section */}
-      <main style={{ flex: 1 }}>
-        <section style={{ padding: '6rem 2rem', textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#dcfce7', color: '#15803d', padding: '0.5rem 1rem', borderRadius: '9999px', fontSize: '0.875rem', fontWeight: 700 }}>
+      <main style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+        {/* Background Glowing Orbs */}
+        <div className="hero-blob" style={{ top: '-10%', left: '-5%', width: '400px', height: '400px', background: '#dbeafe', animation: 'float 10s ease-in-out infinite' }}></div>
+        <div className="hero-blob" style={{ top: '20%', right: '-10%', width: '500px', height: '500px', background: '#f3e8ff', animation: 'float-reverse 12s ease-in-out infinite' }}></div>
+        <div className="hero-blob" style={{ bottom: '-20%', left: '20%', width: '300px', height: '300px', background: '#e0f2fe', animation: 'float 8s ease-in-out infinite' }}></div>
+
+        <section style={{ padding: '7rem 2rem', textAlign: 'center', maxWidth: '800px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
+          <div className="animate-fade-in-up" style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+            <div className="pulse-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: '#dcfce7', color: '#15803d', padding: '0.5rem 1rem', borderRadius: '9999px', fontSize: '0.875rem', fontWeight: 700, border: '1px solid #bbf7d0' }}>
               Tamamen Ücretsiz
             </div>
           </div>
           
-          <h1 style={{ fontSize: '4rem', fontWeight: '800', color: '#0f172a', lineHeight: 1.1, marginBottom: '1.5rem', letterSpacing: '-0.05em' }}>
-            Kariyerinize <span style={{ color: '#2563eb' }}>Güçlü</span> Bir Başlangıç Yapın
+          <h1 className="animate-fade-in-up delay-100" style={{ fontSize: '4.5rem', fontWeight: '800', color: '#0f172a', lineHeight: 1.1, marginBottom: '1.5rem', letterSpacing: '-0.05em' }}>
+            Kariyerinize <span className="animated-gradient-text">Güçlü</span> Bir Başlangıç Yapın
           </h1>
           
-          <p style={{ fontSize: '1.25rem', color: '#475569', marginBottom: '3rem', lineHeight: 1.6, maxWidth: '600px', margin: '0 auto 3rem auto' }}>
+          <p className="animate-fade-in-up delay-200" style={{ fontSize: '1.3rem', color: '#475569', marginBottom: '3.5rem', lineHeight: 1.6, maxWidth: '650px', margin: '0 auto 3.5rem auto' }}>
             Göz alıcı şablonlar, canlı önizleme ve anında PDF indirme özellikleriyle modern bir CV oluşturmak artık çok kolay.
           </p>
           
-          <button 
-            className="hero-btn"
-            onClick={() => navigate('/auth', { state: { isLogin: false } })}
-          >
-            Hemen Ücretsiz CV Oluştur <ArrowRight size={20} />
-          </button>
+          <div className="animate-fade-in-up delay-300">
+            <button 
+              className="hero-btn"
+              onClick={() => navigate('/auth', { state: { isLogin: false } })}
+            >
+              Hemen Ücretsiz CV Oluştur <ArrowRight size={20} />
+            </button>
+          </div>
 
-          <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', gap: '2rem', color: '#64748b', fontSize: '0.9rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle2 size={16} color="#22c55e" /> Üyelik Ücretsiz</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle2 size={16} color="#22c55e" /> Sınırsız İndirme</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle2 size={16} color="#22c55e" /> 5+ Modern Tema</div>
+          <div className="animate-fade-in-up delay-400" style={{ marginTop: '3rem', display: 'flex', justifyContent: 'center', gap: '2.5rem', color: '#64748b', fontSize: '1rem', fontWeight: 500, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle2 size={18} color="#22c55e" /> Üyelik Ücretsiz</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle2 size={18} color="#22c55e" /> Sınırsız İndirme</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle2 size={18} color="#22c55e" /> 5+ Modern Tema</div>
           </div>
         </section>
 
         {/* Features Section */}
-        <section style={{ background: 'white', padding: '5rem 2rem' }}>
+        <section style={{ background: 'white', padding: '5rem 2rem', position: 'relative', zIndex: 1 }}>
           <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
               <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#0f172a', marginBottom: '1rem' }}>Neden CV Stüdyo?</h2>
@@ -166,6 +173,59 @@ export const HomePage = () => {
       {/* Advanced UI Styles */}
       <style>
         {`
+          /* Hero Animations */
+          @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fade-in-up {
+            animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+          }
+          .delay-100 { animation-delay: 100ms; }
+          .delay-200 { animation-delay: 200ms; }
+          .delay-300 { animation-delay: 300ms; }
+          .delay-400 { animation-delay: 400ms; }
+
+          @keyframes gradient-text {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+          .animated-gradient-text {
+            background: linear-gradient(270deg, #2563eb, #8b5cf6, #ec4899, #2563eb);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-text 8s ease infinite;
+          }
+
+          @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+          }
+          @keyframes float-reverse {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(30px) rotate(-5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+          }
+          .hero-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.5;
+          }
+
+          @keyframes pulse-soft {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+          }
+          .pulse-badge {
+            animation: pulse-soft 3s ease-in-out infinite;
+          }
+
           @keyframes ping {
             75%, 100% {
               transform: scale(2);
