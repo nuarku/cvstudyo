@@ -234,43 +234,45 @@ export const EnglishTestPage = () => {
                   width: '800px', 
                   height: '565px', 
                   flexShrink: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
                   boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)', 
                   position: 'relative', 
                   boxSizing: 'border-box'
                 }}
               >
                 {/* Certificate Background Pattern */}
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '10px', background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899)' }}></div>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '10px', background: 'linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899)', borderTopLeftRadius: '15px', borderTopRightRadius: '15px' }}></div>
                 
-                <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-                  <img src="/logo.png" alt="CV Stüdyo" style={{ height: '40px', marginBottom: '1rem' }} />
-                  <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.025em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>SEVİYE TESPİT BELGESİ</h1>
-                  <p style={{ color: '#64748b', fontSize: '1.1rem', marginTop: '0.5rem' }}>İngilizce Seviye Tespiti</p>
+                <div style={{ textAlign: 'center', marginBottom: '1rem', marginTop: '0.5rem' }}>
+                  <img src="/logo.png" alt="CV Stüdyo" style={{ height: '36px', marginBottom: '0.5rem' }} />
+                  <h1 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.025em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>SEVİYE TESPİT BELGESİ</h1>
+                  <p style={{ color: '#64748b', fontSize: '1rem', marginTop: '0.25rem', marginBottom: 0 }}>İngilizce Seviye Tespiti</p>
                 </div>
 
-                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                  <p style={{ color: '#475569', fontSize: '1.1rem', marginBottom: '0.5rem' }}>Bu sertifika,</p>
-                  <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#1e293b', borderBottom: '2px solid #e2e8f0', display: 'inline-block', paddingBottom: '0.5rem', marginBottom: '1rem', whiteSpace: 'nowrap' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{ color: '#475569', fontSize: '1.1rem', marginBottom: '0.25rem' }}>Bu sertifika,</p>
+                  <h2 style={{ fontSize: '1.8rem', fontWeight: 700, color: '#1e293b', borderBottom: '2px solid #e2e8f0', display: 'inline-block', paddingBottom: '0.5rem', marginBottom: '0.75rem', whiteSpace: 'nowrap' }}>
                     {(cvData?.personalInfo?.fullName || currentUser?.email?.split('@')[0] || 'KULLANICI').toUpperCase()}
                   </h2>
-                  <p style={{ color: '#475569', fontSize: '1.1rem', maxWidth: '550px', margin: '0.5rem auto' }}>
+                  <p style={{ color: '#475569', fontSize: '1rem', maxWidth: '550px', margin: '0 auto' }}>
                     tarafından tamamlanan İngilizce değerlendirme sınavı sonucunda aşağıdaki tahmini seviyeye ulaştığını gösterir.
                   </p>
                   
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginTop: '2.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', marginTop: '1.5rem' }}>
                     <div>
-                      <div style={{ fontSize: '0.9rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Seviye</div>
-                      <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563eb', whiteSpace: 'nowrap' }}>{result.level}</div>
+                      <div style={{ fontSize: '0.85rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Seviye</div>
+                      <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#2563eb', whiteSpace: 'nowrap' }}>{result.level}</div>
                     </div>
                     <div style={{ width: '1px', background: '#e2e8f0' }}></div>
                     <div>
-                      <div style={{ fontSize: '0.9rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>Skor</div>
-                      <div style={{ fontSize: '2rem', fontWeight: 800, color: '#2563eb', whiteSpace: 'nowrap' }}>{result.score}/100</div>
+                      <div style={{ fontSize: '0.85rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Skor</div>
+                      <div style={{ fontSize: '1.8rem', fontWeight: 800, color: '#2563eb', whiteSpace: 'nowrap' }}>{result.score}/100</div>
                     </div>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid #f1f5f9', paddingTop: '1.5rem', marginTop: 'auto' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid #f1f5f9', paddingTop: '1rem', marginTop: 'auto' }}>
                   <div style={{ textAlign: 'left' }}>
                     <div style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.25rem' }}>Tarih</div>
                     <div style={{ fontWeight: 600, color: '#475569' }}>{new Date(result.date).toLocaleDateString('tr-TR')}</div>
