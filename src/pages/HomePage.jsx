@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Zap, Layout, FileText, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Zap, Layout, FileText, ArrowRight, CheckCircle2, Brain, BookOpen } from 'lucide-react';
 import { PublicNavbar } from '../components/Layout/PublicNavbar';
 import { PublicFooter } from '../components/Layout/PublicFooter';
 
@@ -125,7 +125,7 @@ export const HomePage = () => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem' }}>
               <div className="test-card english">
                 <div className="icon-wrapper english-icon">
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                  <BookOpen size={36} />
                 </div>
                 <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem', letterSpacing: '-0.025em' }}>İngilizce Seviye Tespiti</h3>
                 <p style={{ color: '#475569', marginBottom: '2.5rem', lineHeight: 1.6, fontSize: '1.1rem' }}>
@@ -138,7 +138,7 @@ export const HomePage = () => {
 
               <div className="test-card career">
                 <div className="icon-wrapper career-icon">
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-3.46-3.52 2.5 2.5 0 0 1-1.06-5.27 2.5 2.5 0 0 1 3.96-2.5A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 3.46-3.52 2.5 2.5 0 0 0 1.06-5.27 2.5 2.5 0 0 0-3.96-2.5A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+                  <Brain size={36} />
                 </div>
                 <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a', marginBottom: '1rem', letterSpacing: '-0.025em' }}>Kariyer Yönelim Testi</h3>
                 <p style={{ color: '#475569', marginBottom: '2.5rem', lineHeight: 1.6, fontSize: '1.1rem' }}>
